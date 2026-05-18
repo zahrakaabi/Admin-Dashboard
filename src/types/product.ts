@@ -1,22 +1,25 @@
 export type PRODUCT = {
+  // generated
   id: string;
-  title: string;
   slug: string;
-  images: string[];
+  creationAt?: Date;
+
+  // from form directly
+  title: string;
   description: string;
+  images: (string | File)[];
   code : string;
+  categoryId: string;
   stock: number;
   maxStock?: number;
   quantity: number;
-  creationAt?: Date;
   prices: {
     regular: number;
     sale: number;
   };
   colors: string[];
-  sizes: number [] | string[];
+  sizes: (number | string)[];
   gender: string;
-  category?: Pick<CategoryNode, 'id' | 'title' | 'slug'>;
 };
 
 export interface CategoryNode {
@@ -28,4 +31,4 @@ export interface CategoryNode {
 
   children?: CategoryNode[];
   products?: PRODUCT[];
-}
+};

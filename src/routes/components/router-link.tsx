@@ -11,8 +11,8 @@ interface RouterLinkProps extends LinkProps {
   ref?: React.Ref<HTMLAnchorElement>
 };
 
-function RouterLink({ ref, ...props }: RouterLinkProps) {
-  return <Link ref={ref} {...props} />
+function RouterLink({ ref, ...other }: RouterLinkProps) {
+  return <Link ref={ref} {...other} />
 };
 
 export default RouterLink;

@@ -2,7 +2,7 @@
 // /*                                DEPENDENCIES                                */
 // /* -------------------------------------------------------------------------- */
 // // Packages
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 // UI Lib Components
@@ -36,13 +36,13 @@ function NavItem({
         <Button  variant="ghost"
         onClick={hasChild ? onToggle : undefined}
         className={cn(
-            "w-full justify-between cursor-pointer rounded-lg px-3 py-2 text-gray-600 text-sm font-medium transition",
-            "hover:bg-gray-100",
-            open ? "bg-blue-200 text-blue-500 hover:bg-blue-200 hover:text-blue-500" : "",
-            active ? "bg-blue-200 text-blue-500 hover:bg-blue-200 hover:text-blue-500" : ""
+            "w-full flex items-center justify-between cursor-pointer rounded-lg px-3 py-2 text-gray-600 text-sm font-medium transition-all duration-200",
+            "hover:bg-gray-100 hover:text-gray-600",
+            (open && active || !open && active) ? "bg-blue-200 text-blue-500 hover:bg-blue-200 hover:text-blue-500": "",
+            (open && !active) ? "bg-gray-100" : ""
         )}>
             <div className="flex items-center gap-2">
-                {icon && <div className="w-6 h-6">{icon}</div>}
+                {icon ? <div className="w-6 h-6">{icon}</div> : <></>}
                 <div className="flex-1 min-w-0 truncate">
                     <span className="capitalize">{title}</span>
                 </div>
@@ -52,7 +52,7 @@ function NavItem({
                 <ChevronDown
                     className={cn(
                         "h-4 w-4 transition-transform duration-200",
-                        open && "rotate-180"
+                        open ? "rotate-180" : ""
                     )}
                 />
             )}
@@ -64,11 +64,16 @@ function NavItem({
             {content}
             <CollapsibleContent className="collapsibleContentClass ml-6 space-y-1">
                 {children?.map((child: NavItemBaseProps) => (
-                    <Link key={child.title}
+                    <NavLink 
+                    end
+                    key={child.title}
                     to={child.path}
-                    className="collapsLink block rounded-md px-3 py-2 text-gray-600 text-sm hover:bg-gray-100">
+                    className={({ isActive }) => cn(
+                        "block rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors",
+                        isActive && "text-blue-600 font-medium bg-blue-50/50 dark:bg-blue-950/30"
+                    )}>
                         {child.title}
-                    </Link>
+                    </NavLink>
                 ))}
             </CollapsibleContent>
         </Collapsible>

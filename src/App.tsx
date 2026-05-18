@@ -1,14 +1,15 @@
 /* -------------------------------------------------------------------------- */
 /*                                DEPENDENCIES                                */
 /* -------------------------------------------------------------------------- */
+// Packages
+import { Route, Routes } from 'react-router-dom';
+
 // UI Local Components
 import Layout from './layouts/dashboard/layout';
-import { ProductListView } from './sections';
-//import { ProductAddEditView } from './sections';
+import { ProductListView, ProductAddEditView } from './sections';
 
 // Styles
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
 
 /* -------------------------------------------------------------------------- */
 /*                                APP COMPONENT                               */
@@ -18,10 +19,9 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<ProductListView />} />
+        <Route path="/dashboard/products" element={<ProductListView />} />
+        <Route path="/dashboard/products/add" element={<ProductAddEditView />} />
       </Routes>
-      
-      {/*<ProductAddEditView />*/}
     </Layout>
   )
 }

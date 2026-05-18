@@ -46,20 +46,20 @@ function Group({ subheader, items }: NavGroupProps) {
   ));
 
 /* -------------------------------- RENDERING ------------------------------- */
-  return (
-    <>
-      { subheader ? (
-        <SidebarGroup key={subheader}>
-          <SidebarGroupLabel>{subheader}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {renderContent}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      ) : (
-        renderContent
-      )}
-    </>
+  return subheader ? (
+    <SidebarGroup key={subheader}>
+      <SidebarGroupLabel>{subheader}</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {renderContent}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  ) : (
+    <SidebarGroup>
+      <SidebarGroupContent>
+        <SidebarMenu>{renderContent}</SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
   );
 };

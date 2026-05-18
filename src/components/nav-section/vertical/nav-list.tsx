@@ -19,31 +19,28 @@ function NavList({ data }: NavListProps) {
 /* ---------------------------------- HOOKS --------------------------------- */
   const { pathname } = useLocation();
   const active = useActiveLink(data.path, !!data.children);
+  
   const [openMenu, setOpenMenu] = useState(active);
 
   useEffect(() => {
-    if (!active) {
-      handleCloseMenu();
+    if (active) {
+      setOpenMenu(true);
+    } else {
+      setOpenMenu(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname, active]);
 
-/* --------------------------------- CONSTS --------------------------------- */
   const handleToggleMenu = useCallback(() => {
     if (data.children) {
       setOpenMenu((prev) => !prev);
     }
   }, [data.children]);
 
-  const handleCloseMenu = useCallback(() => {
-    setOpenMenu(false);
-  }, []);
-
 /* -------------------------------- RENDERING ------------------------------- */
   return <NavItem 
     open={openMenu}
     title={data.title}
-    path={data.title}
+    path={data.path}
     active={active}
     icon={data.icon}
     info={data.info}

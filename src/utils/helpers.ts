@@ -15,3 +15,10 @@ export function generateSlug(title: string): string {
     .replace(/[^\w\s-]/g, '')
     .replace(/\s+/g, '-');
 };
+
+/* -------------------------------------------------------------------------- */
+/*                              CUSTOM VARIABLES                              */
+/* -------------------------------------------------------------------------- */
+export function cv(vars: Record<`--${string}`, string>): React.CSSProperties {
+  return vars as React.CSSProperties;
+};

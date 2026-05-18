@@ -59,7 +59,7 @@ function RHFMultiCheckbox({ name, label, options, multiple }: RHFMultiCheckboxPr
       render={({ field, fieldState: { error } }) => {
         const isChecked = (option: string) =>
           multiple
-            ? Array.isArray(field.value) && field.value.includes(field.value)
+            ? Array.isArray(field.value) && field.value.includes(option)
             : field.value === option;
 
         const handleChange = (option: string) => {

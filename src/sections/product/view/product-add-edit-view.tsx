@@ -3,7 +3,7 @@
 /* -------------------------------------------------------------------------- */
 // Packages
 import * as Yup from 'yup';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackbar } from 'notistack';
@@ -30,16 +30,11 @@ import {
   CATEGORIES 
 } from "@/_mock";
 import { useBoolean } from '@/hooks';
-import type { CategoryNode } from '@/types';
-import { generateId, generateSlug } from '@/utils/helpers';
 
 /* -------------------------------------------------------------------------- */
 /*                              PRODUCT ADD VIEW                              */
 /* -------------------------------------------------------------------------- */
 function ProductAddEditView() {
-/* ---------------------------------- HOOKS --------------------------------- */
-  const [categories, setCategories] = useState<CategoryNode[]>(CATEGORIES);
-
 /* ------------------------------ CUSTOM HOOKS ------------------------------ */
   const loadingSend = useBoolean(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -48,57 +43,71 @@ function ProductAddEditView() {
   const NewCurrentProductSchema = Yup.object().shape({
     title: Yup.string().required('Product Name is required'),
     description: Yup.string().required('Description is required'),
+    code: Yup.string().required('Product code is required'),
+    categoryId: Yup.string().required('Category is required'),
+    stock: Yup.number().min(0).required('Stock is required'),
+    maxStock: Yup.number().min(0).optional().default(undefined),
+    quantity: Yup.number().min(0).required('Quantity is required'),      
+
+    prices: Yup.object({
+      regular: Yup.number().min(0).required('Regular price is required'),
+      sale: Yup.number()
+        .min(0)
+        .test('sale-less-than-regular', 'Sale must be less than Regular', function (value) {
+          const { regular } = this.parent;
+          if (value === undefined || regular === undefined) return true;
+          return value <= regular;
+        })
+        .required('Sale price is required'),
+    }),
+
     images: Yup.array().of(
-      Yup.mixed<File>()
-        .test("fileType", "Only JPG, PNG allowed", (file) => {
-          if (!file) return false;
+      Yup.mixed<File | string>()
+        .test("fileType", "Only JPG, PNG allowed", (value) => {
+          if (typeof value === "string") return true;
+          if (!value) return false;
           return [
             "image/jpeg",
             "image/jpg",
             "image/png"
-          ].includes(file.type);
+          ].includes((value as File).type);
         })
-        .test("fileSize", "File must be less than 5MB", (file) => {
-          if (!file) return false;
-          return file.size <= 5 * 1024 * 1024;
+        .test("fileSize", "File must be less than 5MB", (value) => {
+          if (typeof value === "string") return true
+          if (!value) return false;
+          return (value as File).size <= 5 * 1024 * 1024;
         })
       )
       .min(1, "Images are required")
       .required("Images are required"),
-    code: Yup.string().required('Product code is required'),
-    quantity: Yup.number().required('Quantity is required'),
-    subcategory: Yup.string().required('Category is required'),
-    prices: Yup.object({
-      regular: Yup.number().required('Regular price is required'),
-      sale: Yup.number().required('Sale price is required')
-    }),
-    colors: Yup.array().min(1, 'Choose at least one color'),
-    sizes: Yup.array().min(1, 'Choose at least one size'),
-    gender: Yup.string().required('Gender is required'),
-    stock: Yup.number(),
-    maxStock: Yup.number()
+    colors: Yup.array().of(Yup.string().required()).min(1, 'Choose at least one color').default([]),
+    sizes: Yup.array().of(Yup.mixed<string | number>().required()).min(1, 'Choose at least one size').default([]),
+    gender: Yup.string()
+      .oneOf(['men', 'women', 'unisex', 'kids', ''], 'Gender is required')
+      .test('gender-selected', 'Gender is required', (value) => value !== '')
+      .required('Gender is required')
   });
 
 /* -------------------------------- CONSTANTS ------------------------------- */
   const defaultValues = useMemo(
-    () => ({ 
-      title: "", // currentProduct?.Name || "",
-      description: "",
-      images: [] as File[],
-      code: "",
-      subcategory: "",
+    () => ({
+      title: '', // currentProduct?.Name || "",
+      description: '',
+      code: '',
+      categoryId: '',
+      stock: 0,
+      maxStock: undefined,
       quantity: 0,
       prices: {
         regular: 0,
-        sale: 0
+        sale: 0,
       },
+      images: [],
       colors: [],
       sizes: [],
-      gender: "",
-      stock: 0,
-      maxStock: 0
-    }),
-    [] //[currentProduct]
+      gender: '' as 'men' | 'women' | 'unisex' | 'kids',
+    }), 
+    []//[currentProduct]
   );
 
   const methods = useForm({
@@ -114,46 +123,15 @@ function ProductAddEditView() {
   } = methods;
 
 /* ----------------------------- HANDLER FUNCTIONS -------------------------- */
-  const handleEditAndSend = handleSubmit(async (formData) => {
+  const handleEditAndSend = handleSubmit(async (data) => {
     try {
       loadingSend.onTrue();
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const productWithIdAndSlug = {
-        ...formData,
-        id: generateId('product'),
-        slug: generateSlug(formData.title),
-        gender: formData.gender.toLowerCase(),
-        stock: formData.stock || 20,
-        maxStock: 100,
-        images: formData.images.filter((file): file is File => file !== undefined).map((file) => URL.createObjectURL(file)),
-        colors: formData.colors || [],
-        sizes: formData.sizes || []
-      };
-
-      setCategories((prevCategories) => 
-        prevCategories.map((category) => {
-          if (!category.children) return category;
-          const hasSubcategory = category.children.some((child) => child.title === formData.subcategory);
-          if (!hasSubcategory) return category;
-          return {
-            ...category,
-            children: category.children.map((child) => {
-              if (child.title !== formData.subcategory) return child;
-              return {
-                ...child,
-                products: child.products && [...child.products, productWithIdAndSlug]
-              };
-            })
-          };
-        })
-      );
-
+      console.log('data', data);
       enqueueSnackbar('Update with success!');
       reset();
-      
     } catch (error) {
       console.error(error);
+      enqueueSnackbar("Something went wrong. Please try again.", { variant: "error" });
     } finally {
       loadingSend.onFalse();
     };
@@ -209,14 +187,16 @@ function ProductAddEditView() {
                   />
                   {/* category (select) */}
                   <RHFSelect 
-                  name="subcategory"
+                  name="categoryId"
                   label="Category"
                   placeholder="Select a category"
                   children={CATEGORIES.map((category) => <SelectGroup key={category.id}>
                     <SelectLabel>{category.title}</SelectLabel>
-                      {category.children?.map((child) => <SelectItem key={child.id} value={child.title}>
-                        {child.title}
-                      </SelectItem>)}
+                      {category.children?.map((child) => (
+                        <SelectItem key={child.id} value={child.id}>
+                          {child.title}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>)}>
                   </RHFSelect>
                 </div>
@@ -240,7 +220,7 @@ function ProductAddEditView() {
                 <RHFMultiCheckbox
                   name='gender'
                   label='Gender'
-                  options={['Men', 'Woman', 'Kids']}
+                  options={['men', 'women', 'unisex', 'kids']}
                 />
               </>
             }

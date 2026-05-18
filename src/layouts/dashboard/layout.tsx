@@ -13,12 +13,16 @@ import AppSidebar from "./sidebar";
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen w-full">
+      <div className="flex h-dvh w-full">
         <AppSidebar />
-        <main className="flex-1 overflow-auto p-4">
-          <SidebarTrigger />
-          {children}
-        </main>
+        <div className="flex flex-col flex-1 overflow-hidden">
+          <header className="flex items-center p-2 shrink-0">
+            <SidebarTrigger />
+          </header>
+          <main className="flex-1 overflow-auto p-4">
+            {children}
+          </main>
+        </div>
       </div>
     </SidebarProvider>
   )

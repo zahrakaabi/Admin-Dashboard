@@ -13,13 +13,11 @@ function useActiveLink(path: string, deep = true): ReturnType {
 /* ---------------------------------- HOOKS --------------------------------- */
   const { pathname } = useLocation();
 
-  const isAnchor = path.startsWith('#');
+  const checkPath = path.startsWith('#');
 
-  const currentPath = path === '/' ? '/' : `${path}/`;
+  const normalActive = !checkPath && pathname === path;
 
-  const normalActive = !isAnchor && pathname === currentPath;
-
-  const deepActive = !isAnchor && pathname.includes(currentPath);
+  const deepActive = !checkPath && (pathname === path || pathname.startsWith(`${path}/`));
 
 /* -------------------------------- RENDERING ------------------------------- */
   return deep ? deepActive : normalActive;

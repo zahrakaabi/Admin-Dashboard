@@ -2,8 +2,7 @@
 /*                                DEPENDENCIES                                */
 /* -------------------------------------------------------------------------- */
 // Packages
-import { FormProvider as Form } from 'react-hook-form';
-import type { UseFormReturn } from "react-hook-form";
+import { type UseFormReturn, FormProvider as Form } from 'react-hook-form';
 
 /* -------------------------------------------------------------------------- */
 /*                           FORM PROVIDER COMPONENT                          */
@@ -11,13 +10,13 @@ import type { UseFormReturn } from "react-hook-form";
 type Props = {
   children: React.ReactNode;
   methods: UseFormReturn<any>;
-  onSubmit: (data: any) => void;
+  onSubmit?: VoidFunction;
 };
 
 function FormProvider({ children, methods, onSubmit }: Props) {
   return (
     <Form {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
+      <form onSubmit={onSubmit}>{children}</form>
     </Form>
   );
 };

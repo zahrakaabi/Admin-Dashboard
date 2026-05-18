@@ -10,6 +10,7 @@ import { NavSectionVertical } from "@/components/nav-section";
 
 // Utils
 import { useNavData } from "./config-navigation";
+import { cv } from "@/utils";
 
 /* -------------------------------------------------------------------------- */
 /*                              SIDEBAR COMPONENT                             */
@@ -20,7 +21,7 @@ function AppSidebar() {
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
-    <Sidebar style={{ "--sidebar": "0 0% 100%" } as React.CSSProperties }>
+    <Sidebar style={cv({ "--sidebar": "0 0% 100%" })}>
       <ScrollArea>
         <SidebarContent>
           <Logo className="mt-3 ml-4 mb-1" />
