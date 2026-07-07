@@ -69,7 +69,7 @@ function NavItem({
                     key={child.title}
                     to={child.path}
                     className={({ isActive }) => cn(
-                        "block rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors",
+                        "collapsLink block rounded-md px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors",
                         isActive && "text-blue-600 font-medium bg-blue-50/50 dark:bg-blue-950/30"
                     )}>
                         {child.title}

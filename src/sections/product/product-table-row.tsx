@@ -17,13 +17,11 @@ import { fDate, fTime } from "@/utils";
 /* -------------------------------------------------------------------------- */
 type Props = {
   row: PRODUCT;
-  onEditRow: VoidFunction;
   onDeleteRow: VoidFunction;
 };
 
 function ProductTableRow({
   row,
-  onEditRow,
   onDeleteRow 
 }: Props) {
 /* --------------------------------- CONSTS --------------------------------- */
@@ -34,7 +32,7 @@ function ProductTableRow({
     creationAt,
     category,
     stock = 0,
-    maxStock = 100
+    maxStock = 200
   } = row;
 
   // Manage stock percentage
@@ -43,7 +41,7 @@ function ProductTableRow({
 
   const getStockColor = (percentage: number) => {
     if (percentage <= 30) return 'bg-red-500';
-    if (percentage <= 50) return 'bg-yellow-400';
+    if (percentage <= 70) return 'bg-yellow-400';
     return 'bg-green-500';
   };
 
@@ -56,21 +54,50 @@ function ProductTableRow({
   const percentage = getStockPercentage(stock, maxStock);
   const color = getStockColor(percentage);
 
+  const renderProductPreview = (images: (File | string)[], title: string) => {
+    if (!Array.isArray(images) || images.length === 0) {
+      return <div className="w-[4rem] h-[4rem] rounded-xl bg-gray-300" />;
+    }
+
+    const firstItem = images[0];
+
+    if (firstItem instanceof File) {
+      return (
+        <img 
+          className="w-[4rem] h-[4rem] rounded-xl object-cover" 
+          src={URL.createObjectURL(firstItem)}
+          alt={title} 
+        />
+      );
+    }
+
+    if (typeof firstItem === 'string') {
+      return (
+        <img 
+          className="w-[4rem] h-[4rem] rounded-xl object-cover" 
+          src={firstItem} 
+          alt={title} 
+        />
+      );
+    }
+
+    return <div className="w-[4rem] h-[4rem] rounded-xl bg-gray-300" />;
+  };
+
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <TableRow>
       <TableCell className="max-w-xs p-4">
         <div className="flex items-center gap-3">
-          {images[0]
-            ? <img className="w-[4rem] h-[4rem] rounded-xl object-cover" src={images[0]} alt={title} />
-            : <div className="w-[4rem] h-[4rem] rounded-xl bg-gray-300" />
-          }
+          {renderProductPreview(images, title)}
           <div className="flex flex-col gap-1">
             <h1 className="text-sm font-semibold whitespace-nowrap text-ellipsis overflow-hidden 
             cursor-pointer hover:text-blue-500 hover:underline transition-all duration-200">
               <a>{title ? title : 'Title'}</a>
             </h1>
-            <h2 className="text-sm font-normal text-[#919EAB] cursor-text">{category ? category.title : 'category'}</h2>
+            <h2 className="text-sm font-normal text-[#919EAB] cursor-text">
+              {category}
+            </h2>
           </div>
         </div>
       </TableCell>
@@ -115,7 +142,7 @@ function ProductTableRow({
               <Eye />
               <span>View</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer" onClick={onEditRow}>
+            <DropdownMenuItem className="cursor-pointer">
               <Pencil />
               <span>Edit</span>
             </DropdownMenuItem>

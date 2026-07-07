@@ -68,7 +68,6 @@ type RHFMultiSelectProps = RHFSelectProps & {
 
 export function RHFMultiSelect({ name, placeholder, label, options }: RHFMultiSelectProps) {
 /* ---------------------------------- HOOKS --------------------------------- */
-  //const [selected, setSelected] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const [popoverWidth, setPopoverWidth] = useState<number>(0);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -76,7 +75,7 @@ export function RHFMultiSelect({ name, placeholder, label, options }: RHFMultiSe
 
   useEffect(() => {
     if (buttonRef.current) setPopoverWidth(buttonRef.current.offsetWidth)
-  }, []); //selected
+  }, []);
 
 /* -------------------------------- RENDERING ------------------------------- */
   return ( 

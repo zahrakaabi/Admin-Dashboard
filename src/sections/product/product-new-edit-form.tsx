@@ -26,17 +26,19 @@ import {
 // Utils
 import { 
   CLOTHING_SIZES, 
-  PRODUCT_COLORS, 
-  CATEGORIES 
-} from "@/_mock";
+  PRODUCT_CATEGORY_OPTIONS, 
+  PRODUCT_COLOR_OPTIONS 
+} from '@/_mock';
 import { useBoolean } from '@/hooks';
+import { useProducts } from './context/use-products';
 
 /* -------------------------------------------------------------------------- */
 /*                              PRODUCT ADD VIEW                              */
 /* -------------------------------------------------------------------------- */
-function ProductAddEditView() {
+function ProductNewEditForm() {
 /* ------------------------------ CUSTOM HOOKS ------------------------------ */
   const loadingSend = useBoolean(false);
+  const { addProduct } = useProducts();
   const { enqueueSnackbar } = useSnackbar();
 
 /* ---------------------------- VALIDATION SCHEMA --------------------------- */
@@ -44,11 +46,10 @@ function ProductAddEditView() {
     title: Yup.string().required('Product Name is required'),
     description: Yup.string().required('Description is required'),
     code: Yup.string().required('Product code is required'),
-    categoryId: Yup.string().required('Category is required'),
-    stock: Yup.number().min(0).required('Stock is required'),
-    maxStock: Yup.number().min(0).optional().default(undefined),
-    quantity: Yup.number().min(0).required('Quantity is required'),      
-
+    category: Yup.string().required('Category is required'),
+    stock: Yup.number().typeError('Stock must be a number').min(0).required('Stock is required'),
+    quantity: Yup.number().typeError('Quantity must be a number').min(0).required('Quantity is required'),
+    
     prices: Yup.object({
       regular: Yup.number().min(0).required('Regular price is required'),
       sale: Yup.number()
@@ -83,20 +84,18 @@ function ProductAddEditView() {
     colors: Yup.array().of(Yup.string().required()).min(1, 'Choose at least one color').default([]),
     sizes: Yup.array().of(Yup.mixed<string | number>().required()).min(1, 'Choose at least one size').default([]),
     gender: Yup.string()
-      .oneOf(['men', 'women', 'unisex', 'kids', ''], 'Gender is required')
-      .test('gender-selected', 'Gender is required', (value) => value !== '')
+      .oneOf(['men', 'woman', 'unisex', 'kids'], 'Invalid gender')
       .required('Gender is required')
   });
 
 /* -------------------------------- CONSTANTS ------------------------------- */
   const defaultValues = useMemo(
     () => ({
-      title: '', // currentProduct?.Name || "",
+      title: '', //@TO DO : later change this to currentProduct?.Name || "",
       description: '',
       code: '',
-      categoryId: '',
+      category: '',
       stock: 0,
-      maxStock: undefined,
       quantity: 0,
       prices: {
         regular: 0,
@@ -105,7 +104,7 @@ function ProductAddEditView() {
       images: [],
       colors: [],
       sizes: [],
-      gender: '' as 'men' | 'women' | 'unisex' | 'kids',
+      gender: '' as 'men' | 'woman' | 'unisex' | 'kids',
     }), 
     []//[currentProduct]
   );
@@ -126,7 +125,30 @@ function ProductAddEditView() {
   const handleEditAndSend = handleSubmit(async (data) => {
     try {
       loadingSend.onTrue();
-      console.log('data', data);
+
+      const getInventoryStatus = (stock: number): 'out of stock' | 'low stock' | 'in stock' => {
+        if (stock === 0) return 'out of stock';
+        if (stock < 10) return 'low stock';
+        return 'in stock';
+      };
+
+      const productPayload = {
+        ...data,
+        id: `prod-${Date.now()}`,
+        slug: data.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)+/g, ''),
+        sku: `SKU-${data.code}-${Math.floor(Math.random() * 1000)}`,
+        parentCategory: data.category === 'Clothing' ? 'Clothing' : 'Accessories',
+        status: 'new',
+        inventoryType: getInventoryStatus(data.stock),
+        creationAt: new Date(),
+        images: data.images.filter((img) => img !== undefined) as (string | File)[],
+        maxStock: 200
+      };
+
+      addProduct(productPayload);
       enqueueSnackbar('Update with success!');
       reset();
     } catch (error) {
@@ -187,23 +209,25 @@ function ProductAddEditView() {
                   />
                   {/* category (select) */}
                   <RHFSelect 
-                  name="categoryId"
-                  label="Category"
-                  placeholder="Select a category"
-                  children={CATEGORIES.map((category) => <SelectGroup key={category.id}>
-                    <SelectLabel>{category.title}</SelectLabel>
-                      {category.children?.map((child) => (
-                        <SelectItem key={child.id} value={child.id}>
-                          {child.title}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>)}>
-                  </RHFSelect>
+                    name="category"
+                    label="Category"
+                    placeholder="Select a category"
+                    children={PRODUCT_CATEGORY_OPTIONS.map(({ parent, children }) => (
+                      <SelectGroup key={parent}>
+                        <SelectLabel>{parent}</SelectLabel>
+                          {children.map((child) => (
+                            <SelectItem key={child} value={child}>
+                              {child}
+                            </SelectItem>
+                          ))}
+                      </SelectGroup>
+                    ))}
+                  />
                 </div>
                 <div className="flex gap-4 sm:flex-row flex-col sm:items-start">
                   {/* colors */}
                   <RHFMultiSelect
-                    options={PRODUCT_COLORS}
+                    options={PRODUCT_COLOR_OPTIONS}
                     placeholder="Colors"
                     label='Colors'
                     name='colors'
@@ -220,7 +244,7 @@ function ProductAddEditView() {
                 <RHFMultiCheckbox
                   name='gender'
                   label='Gender'
-                  options={['men', 'women', 'unisex', 'kids']}
+                  options={['men', 'woman', 'unisex', 'kids']}
                 />
               </>
             }
@@ -258,4 +282,4 @@ function ProductAddEditView() {
   )
 };
 
-export default ProductAddEditView;
+export default ProductNewEditForm;

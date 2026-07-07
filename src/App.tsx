@@ -6,7 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 
 // UI Local Components
 import Layout from './layouts/dashboard/layout';
-import { ProductListView, ProductAddEditView } from './sections';
+import { ProductListView, ProductNewEditForm, ProductRoutesLayout } from './sections';
 
 // Styles
 import './App.css';
@@ -19,8 +19,10 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/dashboard/products" element={<ProductListView />} />
-        <Route path="/dashboard/products/add" element={<ProductAddEditView />} />
+        <Route element={<ProductRoutesLayout />}>
+          <Route path="/dashboard/product" element={<ProductListView />} />
+          <Route path="/dashboard/product/add" element={<ProductNewEditForm />} />
+        </Route>
       </Routes>
     </Layout>
   )
