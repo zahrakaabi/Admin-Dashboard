@@ -18,21 +18,23 @@ import { fDate, fTime } from "@/utils";
 type Props = {
   row: PRODUCT;
   onDeleteRow: VoidFunction;
+  onEditRow: VoidFunction;
 };
 
 function ProductTableRow({
   row,
-  onDeleteRow 
+  onDeleteRow,
+  onEditRow
 }: Props) {
 /* --------------------------------- CONSTS --------------------------------- */
-  const { 
+  const {
     title, 
     prices: { sale }, 
     images,
     creationAt,
     category,
     stock = 0,
-    maxStock = 200
+    maxStock = 200,
   } = row;
 
   // Manage stock percentage
@@ -142,7 +144,7 @@ function ProductTableRow({
               <Eye />
               <span>View</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
+            <DropdownMenuItem className="cursor-pointer" onClick={onEditRow}>
               <Pencil />
               <span>Edit</span>
             </DropdownMenuItem>

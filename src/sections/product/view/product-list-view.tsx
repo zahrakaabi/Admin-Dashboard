@@ -1,6 +1,9 @@
 /* -------------------------------------------------------------------------- */
 /*                                DEPENDENCIES                                */
 /* -------------------------------------------------------------------------- */
+// Packages
+import { useNavigate } from "react-router";
+
 // UI Lib Components
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui";
 
@@ -9,6 +12,7 @@ import ProductTableRow from "../product-table-row";
 
 // Utils
 import { useProducts } from "../context/use-products";
+import { paths } from "@/routes/paths";
 
 /* -------------------------------------------------------------------------- */
 /*                         PRODUCT LIST VIEW COMPONENT                        */
@@ -16,6 +20,7 @@ import { useProducts } from "../context/use-products";
 function ProductListView() {
 /* --------------------------------- CONSTS --------------------------------- */
   const { products } = useProducts();
+  const navigate = useNavigate();
 
   const TABLE_HEAD = [
     { label: 'Product', minWidth: 200 },
@@ -28,6 +33,10 @@ function ProductListView() {
 /* ------------------------------- HANDLE ROW ------------------------------- */
   const handleDeleteRow = (productId: string) => {
     console.log('Delete product with id:', productId);
+  };
+
+  const handleEditRow = (productId: string) => {
+    navigate(paths.dashboard.product.edit(productId));
   };
 
 /* -------------------------------- RENDERING ------------------------------- */
@@ -46,6 +55,7 @@ function ProductListView() {
             key={index} 
             row={row}
             onDeleteRow={() => handleDeleteRow(row.id)}
+            onEditRow={() => handleEditRow(row.id)}
           />)}
         </TableBody>
       </Table>

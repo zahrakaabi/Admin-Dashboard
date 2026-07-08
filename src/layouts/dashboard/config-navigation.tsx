@@ -31,7 +31,7 @@ export function useNavData() {
               { title: 'List', path: paths.dashboard.user.list },
               //{ title: 'Details', path: paths.dashboard.user.details },
               { title: 'Create', path: paths.dashboard.user.create },
-              { title: 'Edit', path: paths.dashboard.user.edit }
+              // { title: 'Edit', path: paths.dashboard.user.edit }
             ]
           },
           { 
@@ -51,7 +51,7 @@ export function useNavData() {
               { title: 'List', path: paths.dashboard.blog.list },
               //{ title: 'Details', path: paths.dashboard.blog.details },
               { title: 'Create', path: paths.dashboard.blog.create },
-              { title: 'Edit', path: paths.dashboard.blog.edit }
+              // { title: 'Edit', path: paths.dashboard.blog.edit }
             ]
           }
         ],

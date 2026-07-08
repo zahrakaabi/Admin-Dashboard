@@ -29,17 +29,24 @@ import {
   PRODUCT_CATEGORY_OPTIONS, 
   PRODUCT_COLOR_OPTIONS 
 } from '@/_mock';
+import type { PRODUCT } from '@/types';
 import { useBoolean } from '@/hooks';
 import { useProducts } from './context/use-products';
 
 /* -------------------------------------------------------------------------- */
 /*                              PRODUCT ADD VIEW                              */
 /* -------------------------------------------------------------------------- */
-function ProductNewEditForm() {
+type ProductNewEditFormProps = {
+  currentProduct?: PRODUCT
+};
+
+function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
 /* ------------------------------ CUSTOM HOOKS ------------------------------ */
   const loadingSend = useBoolean(false);
   const { addProduct } = useProducts();
   const { enqueueSnackbar } = useSnackbar();
+
+  console.log('test', currentProduct)
 
 /* ---------------------------- VALIDATION SCHEMA --------------------------- */
   const NewCurrentProductSchema = Yup.object().shape({
@@ -62,10 +69,10 @@ function ProductNewEditForm() {
         .required('Sale price is required'),
     }),
 
-    images: Yup.array().of(
-      Yup.mixed<File | string>()
+    images: Yup.array()
+      .of(Yup.mixed<string | File>()
         .test("fileType", "Only JPG, PNG allowed", (value) => {
-          if (typeof value === "string") return true;
+          if (typeof value === "string" || value === undefined) return true;
           if (!value) return false;
           return [
             "image/jpeg",
@@ -74,7 +81,7 @@ function ProductNewEditForm() {
           ].includes((value as File).type);
         })
         .test("fileSize", "File must be less than 5MB", (value) => {
-          if (typeof value === "string") return true
+          if (typeof value === "string" || value === undefined) return true
           if (!value) return false;
           return (value as File).size <= 5 * 1024 * 1024;
         })
@@ -91,25 +98,25 @@ function ProductNewEditForm() {
 /* -------------------------------- CONSTANTS ------------------------------- */
   const defaultValues = useMemo(
     () => ({
-      title: '', //@TO DO : later change this to currentProduct?.Name || "",
-      description: '',
-      code: '',
-      category: '',
-      stock: 0,
-      quantity: 0,
+      title: currentProduct?.title || '',
+      description: currentProduct?.description || '',
+      code: currentProduct?.code || '',
+      category: currentProduct?.category || '',
+      stock: currentProduct?.stock || 0,
+      quantity: currentProduct?.quantity || 0,
       prices: {
-        regular: 0,
-        sale: 0,
+        regular: currentProduct?.prices?.regular || 0,
+        sale: currentProduct?.prices?.sale || 0,
       },
-      images: [],
-      colors: [],
-      sizes: [],
-      gender: '' as 'men' | 'woman' | 'unisex' | 'kids',
+      images: (currentProduct?.images || []) as (string | File)[],
+      colors: currentProduct?.colors || [],
+      sizes: currentProduct?.sizes || [],
+      gender: (currentProduct?.gender || '') as 'men' | 'woman' | 'unisex' | 'kids'
     }), 
-    []//[currentProduct]
+    [currentProduct]
   );
 
-  const methods = useForm({
+  const methods = useForm({ 
     resolver: yupResolver(NewCurrentProductSchema),
     defaultValues
   });

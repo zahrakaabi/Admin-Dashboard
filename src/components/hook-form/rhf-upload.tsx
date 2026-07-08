@@ -24,6 +24,8 @@ function RHFUpload({ name }: RHFUploadProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const files = watch(name) as File[] | undefined;
 
+  console.log('files', files)
+
 /* -------------------------------- CONSTANTS ------------------------------- */
   const handleFiles = (filesList: FileList | null) => {
     if (!filesList) return;
@@ -64,7 +66,7 @@ function RHFUpload({ name }: RHFUploadProps) {
 /* ----------------------------- RENDER FILES UI ---------------------------- */
   const renderFiles = (
     <div className="flex gap-3 flex-wrap">
-      {files?.map((file, index) => {
+      {/* {files?.map((file, index) => {
         const isImage = file.type.startsWith("image/");
         const url = isImage ? URL.createObjectURL(file) : null;
 
@@ -89,7 +91,7 @@ function RHFUpload({ name }: RHFUploadProps) {
             )}
           </div>
         );
-      })}
+      })} */}
     </div>
   );
 
