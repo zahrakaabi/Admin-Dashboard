@@ -190,6 +190,13 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
                 />
                 <RHFUpload
                   name="images"
+                  multiple
+                  // thumbnail
+                  // maxSize={3145728}
+                  // onDrop={handleDrop}
+                  // onRemove={handleRemoveFile}
+                  // onRemoveAll={handleRemoveAllFiles}
+                  // onUpload={() => console.info('ON UPLOAD')}
                 />
               </>
             }
