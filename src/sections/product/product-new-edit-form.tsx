@@ -3,7 +3,7 @@
 /* -------------------------------------------------------------------------- */
 // Packages
 import * as Yup from 'yup';
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackbar } from 'notistack';
@@ -123,12 +123,29 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
 
   const {
     reset,
+    watch,
     //control,
     handleSubmit,
-    //formState: { isSubmitting }
+    //formState: { isSubmitting },
+    setValue
   } = methods;
 
 /* ----------------------------- HANDLER FUNCTIONS -------------------------- */
+  const values = watch();
+
+  const handleDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const files = values.images || [];
+      const newFiles = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      );
+      setValue('images', [...files, ...newFiles], { shouldValidate: true });
+    },
+    [setValue, values.images]
+  );
+
   const handleEditAndSend = handleSubmit(async (data) => {
     try {
       loadingSend.onTrue();
@@ -191,9 +208,9 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
                 <RHFUpload
                   name="images"
                   multiple
-                  // thumbnail
+                  thumbnail
                   // maxSize={3145728}
-                  // onDrop={handleDrop}
+                  onDrop={handleDrop}
                   // onRemove={handleRemoveFile}
                   // onRemoveAll={handleRemoveAllFiles}
                   // onUpload={() => console.info('ON UPLOAD')}

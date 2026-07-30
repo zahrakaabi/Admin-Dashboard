@@ -15,7 +15,7 @@ import type { ImageProps } from './types';
 const Image = forwardRef<HTMLSpanElement, ImageProps>(
   (
     {
-       ratio,
+      ratio,
       overlay,
       disabledEffect = false,
       alt,

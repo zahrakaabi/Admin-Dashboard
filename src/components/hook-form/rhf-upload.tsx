@@ -22,6 +22,30 @@ interface Props extends Omit<UploadProps, 'file'> {
 };
 
 /* -------------------------------------------------------------------------- */
+/*                            HELPER TEXT COMPONENT                           */
+/* -------------------------------------------------------------------------- */
+interface FormHelperTextProps {
+  error?: string;
+  helperText?: React.ReactNode
+};
+
+function FormHelperText({ error, helperText }: FormHelperTextProps) {
+  if (!error && !helperText) return null;
+
+/* -------------------------------- RENDERING ------------------------------- */
+  return (
+    <p
+      className={cn(
+        "text-[0.8rem] font-medium px-2 mt-1.5",
+        error ? "text-destructive" : "text-muted-foreground"
+      )}
+    >
+      {error || helperText}
+    </p>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /*                          RHF UMPLAOD BOX COMPONENT                         */
 /* -------------------------------------------------------------------------- */
 export function RHFUploadBox({ name, ...other }: Props) {
@@ -34,7 +58,12 @@ export function RHFUploadBox({ name, ...other }: Props) {
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <UploadBox files={field.value} error={!!error} {...other} />
+        <UploadBox 
+          files={field.value} 
+          error={!!error} 
+          onDrop={field.onChange} 
+          {...other} 
+        />
       )}
     />
   );
@@ -46,45 +75,6 @@ export function RHFUploadBox({ name, ...other }: Props) {
 function RHFUpload({ name, multiple, helperText, ...other }: Props) {
 /* ---------------------------------- HOOKS --------------------------------- */
   const { control } = useFormContext();
-
-/* ----------------------------- RENDER FILES UI ---------------------------- */
-  // const renderFiles = (
-  //   <div className="flex gap-3 flex-wrap">
-  //     {files?.map((file, index) => {
-  //       const isImage = typeof file === 'string' 
-  //         ? (file?.includes('.png') || file?.includes('.jpg') || file?.includes('.jpeg'))
-  //         : file.type.startsWith('image/');
-
-  //       const displayUrl = typeof file === 'string'
-  //         ? file
-  //         : (isImage ? URL.createObjectURL(file) : null);
-  //       // const isImage = file.type.startsWith("image/");
-  //       // const url = isImage ? URL.createObjectURL(file) : null;
-
-  //       return (
-  //         <div key={index}
-  //         className="relative w-20 h-20 border border-gray-300 rounded overflow-hidden flex items-center justify-center text-xs">
-  //           {isImage ? (
-  //             <img
-  //               src={URL!}
-  //               alt={file.name}
-  //               className="object-cover w-full h-full"
-  //             />
-  //           ) : (
-  //             <div className="flex flex-col items-center">
-  //               <img 
-  //                 src='https://cdn-icons-png.flaticon.com/512/4726/4726010.png'
-  //                 alt='pdf-icon'
-  //                 className="object-contain w-10 h-10"
-  //               />
-  //               <p className="text-center mt-2 px-1 max-w-[10ch] truncate">{file.name}</p>
-  //             </div>
-  //           )}
-  //         </div>
-  //       );
-  //     })}
-  //   </div>
-  // );
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
@@ -99,17 +89,9 @@ function RHFUpload({ name, multiple, helperText, ...other }: Props) {
             files={field.value}
             error={!!error}
             helperText={
-              (!!error || helperText) && (
-                <p
-                  className={cn(
-                    "text-[0.8rem] font-medium px-2", 
-                    error ? "text-destructive" : "text-muted-foreground"
-                  )}
-                >
-                  {error ? error?.message : helperText}
-                </p>
-              )
+              <FormHelperText error={error?.message} helperText={helperText} />
             }
+            onDrop={field.onChange}
             {...other}
           />
         ) : (
@@ -118,17 +100,9 @@ function RHFUpload({ name, multiple, helperText, ...other }: Props) {
             file={field.value}
             error={!!error}
             helperText={
-              (!!error || helperText) && (
-                <p
-                  className={cn(
-                    "text-[0.8rem] font-medium px-2", 
-                    error ? "text-destructive" : "text-muted-foreground"
-                  )}
-                >
-                  {error ? error?.message : helperText}
-                </p>
-              )
+              <FormHelperText error={error?.message} helperText={helperText} />
             }
+            onDrop={field.onChange}
             {...other}
           />
         )}

@@ -40,15 +40,13 @@ function Upload({
     ...other,
   });
 
-  console.log('file', file)
-
   const hasFile = !!file && !multiple;
   const hasFiles = !!files && multiple && !!files.length;
   // const hasError = isDragReject || !!error;
 
   const renderSinglePreview = (
     <SingleFilePreview imgUrl={typeof file === 'string' ? file : file?.preview || ""} />
-  );
+  ); 
 
   const renderMultiPreview = hasFiles && (
     <>
@@ -86,7 +84,7 @@ function Upload({
           Drop files here or click{" "}
           <span className="mx-1 text-primary underline cursor-pointer">
             browse
-          </span>
+          </span>{" "}
           through your machine
         </p>
       </div>
@@ -95,7 +93,7 @@ function Upload({
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
-    <div>
+    <div className="relative w-full">
       <div {...getRootProps()}>
         <input {...getInputProps()} />
         {hasFile ? renderSinglePreview : renderPlaceholder}
@@ -104,6 +102,6 @@ function Upload({
       {renderMultiPreview}
     </div>
   )
-}
+};
 
 export default Upload;

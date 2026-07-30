@@ -1,27 +1,45 @@
 /* -------------------------------------------------------------------------- */
 /*                                DEPENDENCIES                                */
 /* -------------------------------------------------------------------------- */
-// Packages
-import type { CustomFile, PreviewMultiFileProps } from './types';
+// UI Local Components
+import { fileData, FileThumbnail } from '../file-thumbnails';
+
+// Utils
+import type { UploadProps } from './types';
 
 /* -------------------------------------------------------------------------- */
 /*                        PREVIEW MULTI FILE COMPONENT                        */
 /* -------------------------------------------------------------------------- */
-function MultiFilePreview({ thumbnail, files, onRemove }: PreviewMultiFileProps) {
+function MultiFilePreview({ thumbnail, files, onRemove }: UploadProps) {
 /* -------------------------------- RENDERING ------------------------------- */
   return (
-    <div style={{ marginTop: '16px', width: '100%' }}>
+    <div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        {files?.map((file, index) => {
-          // const { key, name = '', size = 0 } = fileData(file);
-          const isNotFormatFile = typeof file === 'string';
-          const src = isNotFormatFile ? file : undefined;
+        {files?.map((file) => {
+          const { key, name = '', size = 0 } = fileData(file);
 
-          console.log('testtttt', files)
+          if (thumbnail) {
+            return (
+              <div>
+                <FileThumbnail
+                  tooltip
+                  fileView
+                  file={file}
+                  // sx={{ position: 'absolute' }}
+                  // fileSx={{ position: 'absolute' }}
+                />
+              </div>
+            )
+          }
 
           return (
-            <div key={index}>
-              {src ? <img src={src} alt="img" /> : null}
+            <div
+              key={key}
+              // {...varFade().inUp}
+              className="flex flex-row items-center gap-4 my-2 py-2 px-3 rounded border border-gray-500/15"
+            >
+              <FileThumbnail file={file} />
+              hg
             </div>
           );
         })}

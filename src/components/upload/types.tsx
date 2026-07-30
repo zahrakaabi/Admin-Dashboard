@@ -14,16 +14,6 @@ export interface CustomFile extends File {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                     PREVIEW MULTI FILE PROPS INTERFACE                     */
-/* -------------------------------------------------------------------------- */
-export interface PreviewMultiFileProps {
-  files: (CustomFile | string)[];
-  onRemove?: (file: CustomFile | string) => void;
-  onRemoveAll?: () => void;
-  onUpload?: () => void;
-}
-
-/* -------------------------------------------------------------------------- */
 /*                           UPLOAD PROPS INTERFACE                           */
 /* -------------------------------------------------------------------------- */
 export interface UploadProps extends DropzoneOptions {
