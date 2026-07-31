@@ -29,6 +29,7 @@
     "framer-motion": "^12.42.2",
     "lucide-react": "^0.525.0",
     "notistack": "^3.0.2",
+    "radix-ui": "^1.6.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-dropzone": "^17.0.0",

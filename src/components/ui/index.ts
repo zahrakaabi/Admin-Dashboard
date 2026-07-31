@@ -14,3 +14,5 @@ export * from './popover';
 export * from './dropdown-menu';
 export * from './scroll-area';
 export * from './sidebar';
+export * from './sheet';
+export * from './skeleton';

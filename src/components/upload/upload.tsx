@@ -44,17 +44,19 @@ function Upload({
   const hasFiles = !!files && multiple && !!files.length;
   // const hasError = isDragReject || !!error;
 
+/* ---------------------------- SINGLE PREVIEW UI --------------------------- */
   const renderSinglePreview = (
     <SingleFilePreview imgUrl={typeof file === 'string' ? file : file?.preview || ""} />
   ); 
 
+/* ---------------------------- MULTI PREVIEW UI ---------------------------- */
   const renderMultiPreview = hasFiles && (
     <>
-      <div className="my-12">
+      <div className="my-3">
         <MultiFilePreview files={files} thumbnail={thumbnail} onRemove={onRemove} />
       </div>
 
-      <div className="flex flex-row justify-end gap-3">
+      {/* <div className="flex flex-row justify-end gap-3">
         {onRemoveAll && (
           <Button color="inherit" variant="outline" size="sm" onClick={onRemoveAll}>
             Remove All
@@ -69,14 +71,14 @@ function Upload({
           >
             Upload
           </Button>
-        )}*/}
-      </div>
+        )}
+      </div> */}
     </>
   );
 
 /* ----------------------------- PLACEHOLDER UI ----------------------------- */
   const renderPlaceholder = (
-    <div>
+    <div className="my-3 flex items-center justify-center flex-wrap">
       <UploadIllustration />
       <div className="text-center space-y-1">
         <h2 className="text-lg font-semibold">Drop or Select file</h2>
@@ -94,7 +96,10 @@ function Upload({
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <div className="relative w-full">
-      <div {...getRootProps()}>
+      <div 
+       className="relative overflow-hidden cursor-pointer rounded p-5 outline-none border border-gray-500/40 transition-[opacity,padding] duration-200 hover:opacity-[0.72]"
+       {...getRootProps()}
+      >
         <input {...getInputProps()} />
         {hasFile ? renderSinglePreview : renderPlaceholder}
       </div>

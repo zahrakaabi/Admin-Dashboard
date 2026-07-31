@@ -1,7 +1,10 @@
 /* -------------------------------------------------------------------------- */
 /*                                DEPENDENCIES                                */
 /* -------------------------------------------------------------------------- */
-// Packages
+// UI Lib Components
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui';
+
+// Utils
 import { fileData, fileThumb, fileFormat } from './utils';
 
 /* -------------------------------------------------------------------------- */
@@ -26,7 +29,7 @@ function FileThumbnail({ file, tooltip, fileView, onDownload }: FileIconProps) {
     format === 'image' && fileView  ? (
       <img
         src={fileSrc}
-        className="w-full h-full shrink-0 object-cover"
+        className="w-20 h-20 shrink-0 object-cover"
         alt={name}
       />
     ) : format === 'pdf' && fileView ? (
@@ -45,26 +48,21 @@ function FileThumbnail({ file, tooltip, fileView, onDownload }: FileIconProps) {
 
   if (tooltip) {
     return (
-        <><h1>{renderContent}</h1>
-    {/* //   <Tooltip title={name}>
-    //     <Stack
-    //       flexShrink={0}
-    //       component="span"
-    //       alignItems="center"
-    //       justifyContent="center"
-    //       sx={{
-    //         width: 'fit-content',
-    //         height: 'inherit',
-    //       }}
-    //     >
-    //       {renderContent}
-    //       {onDownload && <DownloadButton onDownload={onDownload} />}
-    //     </Stack>
-    //   </Tooltip> */}
-    </>
+      <Tooltip>
+        <TooltipTrigger>
+          <span className="flex justify-center items-center shrink-0 w-fit h-[inherit]">
+            {renderContent}
+          </span>
+          {/* {onDownload && <DownloadButton onDownload={onDownload} />} */}
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{name}</p>
+        </TooltipContent>
+      </Tooltip>
     );
   }
 
+/* -------------------------------- RENDERING ------------------------------- */
   return (
     <>
       {renderContent}

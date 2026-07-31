@@ -46,8 +46,6 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
   const { addProduct } = useProducts();
   const { enqueueSnackbar } = useSnackbar();
 
-  console.log('test', currentProduct)
-
 /* ---------------------------- VALIDATION SCHEMA --------------------------- */
   const NewCurrentProductSchema = Yup.object().shape({
     title: Yup.string().required('Product Name is required'),
