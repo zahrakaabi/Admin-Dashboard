@@ -5,7 +5,7 @@
 import { useDropzone } from "react-dropzone";
 
 // UI Lib Components
-import { Button } from "../ui";
+//import { Button } from "../ui";
 
 // UI Local Components
 import SingleFilePreview from "./preview-single-file";
@@ -29,12 +29,13 @@ function Upload({
   files,
   thumbnail,
   onRemove,
-  onRemoveAll,
+  //onRemoveAll,
 
   ...other
 }: UploadProps) {
 /* --------------------------------- CONSTS --------------------------------- */
-  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+//, isDragActive, isDragReject, fileRejections
+  const { getRootProps, getInputProps } = useDropzone({
     multiple,
     disabled,
     ...other,

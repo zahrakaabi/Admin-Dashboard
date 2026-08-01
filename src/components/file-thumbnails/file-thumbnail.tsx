@@ -17,7 +17,7 @@ type FileIconProps = {
   onDownload?: VoidFunction;
 };
 
-function FileThumbnail({ file, tooltip, fileView, onDownload }: FileIconProps) {
+function FileThumbnail({ file, tooltip, fileView }: FileIconProps) {
 /* --------------------------------- CONSTS --------------------------------- */
   const { name = '', path = '', preview = '' } = fileData(file) || {};
 

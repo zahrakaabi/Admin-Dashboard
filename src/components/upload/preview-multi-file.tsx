@@ -14,12 +14,12 @@ import { varFade } from '../animate';
 /* -------------------------------------------------------------------------- */
 /*                        PREVIEW MULTI FILE COMPONENT                        */
 /* -------------------------------------------------------------------------- */
-function MultiFilePreview({ thumbnail, files, onRemove }: UploadProps) {
+function MultiFilePreview({ thumbnail, files }: UploadProps) {
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <AnimatePresence initial={false}>
       {files?.map((file) => {
-        const { key, name = '' } = fileData(file);
+        const { key } = fileData(file);
 
         if (thumbnail) {
           return (
