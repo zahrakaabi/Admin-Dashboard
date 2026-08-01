@@ -29,9 +29,9 @@ export function useNavData() {
             path: paths.dashboard.user.list,
             children: [
               { title: 'List', path: paths.dashboard.user.list },
-              //{ title: 'Details', path: paths.dashboard.user.details },
+              // { title: 'Details', path: paths.dashboard.user.details },
               { title: 'Create', path: paths.dashboard.user.create },
-              // { title: 'Edit', path: paths.dashboard.user.edit }
+              { title: 'Edit', path: paths.dashboard.user.edit }
             ]
           },
           { 
@@ -39,7 +39,7 @@ export function useNavData() {
             path: paths.dashboard.product.list,
             children: [
               { title: 'List', path: paths.dashboard.product.list },
-              //{ title: 'Details', path: paths.dashboard.product.details },
+              // { title: 'Details', path: paths.dashboard.product.details },
               { title: 'Create', path: paths.dashboard.product.create },
               { title: 'Edit', path: paths.dashboard.product.edit }
             ]
@@ -49,9 +49,9 @@ export function useNavData() {
             path: paths.dashboard.blog.list,
             children: [
               { title: 'List', path: paths.dashboard.blog.list },
-              //{ title: 'Details', path: paths.dashboard.blog.details },
+              // { title: 'Details', path: paths.dashboard.blog.details },
               { title: 'Create', path: paths.dashboard.blog.create },
-              // { title: 'Edit', path: paths.dashboard.blog.edit }
+              { title: 'Edit', path: paths.dashboard.blog.edit }
             ]
           }
         ],
