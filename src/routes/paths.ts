@@ -23,7 +23,7 @@ export const paths = {
     user: {
       list: `${ROOTS.DASHBOARD}/users`,
       create: `${ROOTS.DASHBOARD}/users/add`,
-      // edit: (id: number) => `${ROOTS.DASHBOARD}/users/${id}/edit`
+      edit: (id: string) => `${ROOTS.DASHBOARD}/users/${id}/edit`
     },
     product: {
       list: `${ROOTS.DASHBOARD}/product`,
@@ -33,7 +33,7 @@ export const paths = {
     blog: {
       list: `${ROOTS.DASHBOARD}/blog`,
       create: `${ROOTS.DASHBOARD}/blog/add`,
-      // edit: (id: number) => `${ROOTS.DASHBOARD}/blog/${id}/edit`
+      edit: (id: string) => `${ROOTS.DASHBOARD}/blog/${id}/edit`
     }
   }
 };
