@@ -13,14 +13,22 @@ function useActiveLink(path: string, deep = true): ReturnType {
 /* ---------------------------------- HOOKS --------------------------------- */
   const { pathname } = useLocation();
 
-  const checkPath = path.startsWith('#');
+  if (path.startsWith('#')) {
+    return false;
+  }
 
-  const normalActive = !checkPath && pathname === path;
+  const normalize = (url: string) =>
+    url.replace(/\/\d+(?=\/|$)/g, '/:id');
 
-  const deepActive = !checkPath && (pathname === path || pathname.startsWith(`${path}/`));
+  const current = normalize(pathname);
+  const target = normalize(path);
+
+  if (!deep) {
+    return current === target;
+  }
 
 /* -------------------------------- RENDERING ------------------------------- */
-  return deep ? deepActive : normalActive;
+  return current === target || current.startsWith(`${target}/`);
 };
 
 export default useActiveLink;
