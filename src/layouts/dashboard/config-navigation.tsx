@@ -40,7 +40,7 @@ export function useNavData() {
               { title: 'List', path: paths.dashboard.product.list },
               { title: 'Create', path: paths.dashboard.product.create },
               // { title: 'Details', path: paths.dashboard.product.details },
-              { title: 'Edit', path: paths.dashboard.product.edit }
+              { title: 'Edit', path: paths.dashboard.product.edit('classic-leather-loafers') }
             ]
           },
           { 
@@ -50,7 +50,7 @@ export function useNavData() {
               { title: 'List', path: paths.dashboard.blog.list },
               // { title: 'Details', path: paths.dashboard.blog.details },
               { title: 'Create', path: paths.dashboard.blog.create },
-              { title: 'Edit', path: paths.dashboard.blog.edit }
+              { title: 'Edit', path: paths.dashboard.blog.edit('1') }
             ]
           }
         ],

@@ -3,7 +3,7 @@
 /* -------------------------------------------------------------------------- */
 export type NavItemBaseProps = {
   title: string;
-  path: string | ((id: string) => string);
+  path: string;
   icon?: React.ReactElement;
   info?: React.ReactElement;
   caption?: string;
