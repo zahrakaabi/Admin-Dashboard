@@ -16,7 +16,7 @@ export function useNavData() {
       {
         subheader: 'Overview',
         items: [
-          { title: 'App', path: paths.dashboard.root },
+          { title: 'E-commerce', path: paths.dashboard.root },
           { title: 'Analytics', path: paths.dashboard.analytics },
         ],
       },

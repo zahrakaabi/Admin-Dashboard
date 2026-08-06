@@ -5,7 +5,7 @@
 import { SparklineChart } from "@/components/charts";
 
 // Utils
-import { PRODUCT_SUMMARY } from "@/_mock/app/_summary";
+import { PRODUCT_SUMMARY } from "@/_mock/e-commerce/_summary";
 
 /* -------------------------------------------------------------------------- */
 /*                       PRODUCT SUMMARY CARD COMPONENT                       */
@@ -18,7 +18,7 @@ function ProductSummaryCard({ summary }: { summary: typeof PRODUCT_SUMMARY[0] })
     <div className="flex items-center gap-12 p-4 rounded-lg bg-white shadow-lg">
         <div>
             <h3 className="font-sans font-semibold text-sm leading-normal">{title}</h3>
-            <p className="my-6 font-bold text-2xl leading-normal">{total}</p>
+            <p className="my-4 font-bold text-2xl leading-normal">{total}</p>
             <div className="flex gap-2">
                 <span className={`${trend === "up" ? 'bg-green-100': 'bg-red-100'} w-6 h-6 flex rounded-full relative items-center justify-center`}>
                     {trend === "up" ? (

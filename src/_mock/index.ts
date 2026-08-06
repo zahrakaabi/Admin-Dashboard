@@ -1,3 +1,3 @@
 export * from './_products';
 
-export * from './app/_summary';
+export * from './e-commerce/_summary';
