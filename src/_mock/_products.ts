@@ -38,6 +38,33 @@ export const ACCESSORIES_SIZES = [
   '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12'
 ];
 
+export const NEW_PRODUCTS: {
+  id: string;
+  name: string;
+  image: string;
+}[] = [
+  {
+    id: '0000001',
+    name: 'Urban Explorer Sneakers',
+    image: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=800'
+  },
+  {
+    id: '0000002',
+    name: 'Classic Leather Loafers',
+    image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=800'
+  },
+  {
+    id: '0000003',
+    name: 'Mountain Trekking Boots',
+    image: 'https://images.pexels.com/photos/1159670/pexels-photo-1159670.jpeg?auto=compress&cs=tinysrgb&w=800'
+  },
+  {
+    id: '0000004',
+    name: 'Elegance Stiletto Heels',
+    image: 'https://images.pexels.com/photos/336372/pexels-photo-336372.jpeg?auto=compress&cs=tinysrgb&w=800'
+  }
+];
+
 export const _products: PRODUCT[] = [
   {
     id: 'classic-leather-loafers',

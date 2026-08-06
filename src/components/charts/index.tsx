@@ -1,0 +1,1 @@
+export { default as SparklineChart } from "./line-chart";

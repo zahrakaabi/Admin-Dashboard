@@ -16,8 +16,7 @@ export const paths = {
   // DASHBOARD
   dashboard: {
     // OVERVIEW
-    root: `${ROOTS.DASHBOARD}/dashboard`,
-    eCommerce: `${ROOTS.DASHBOARD}/eCommerce`,
+    root: `${ROOTS.DASHBOARD}`,
     analytics: `${ROOTS.DASHBOARD}/analytics`,
     // MANAGMENT
     user: {
