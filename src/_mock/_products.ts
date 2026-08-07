@@ -79,7 +79,8 @@ export const _products: PRODUCT[] = [
     gender: 'woman',
     prices: {
       regular: 120.00,
-      sale: 97.14
+      sale: 97.14,
+      cost: 120.00
     },
     stock: 75,
     maxStock: 100,
@@ -103,7 +104,8 @@ export const _products: PRODUCT[] = [
     gender: 'men',
     prices: {
       regular: 180.00,
-      sale: 0
+      sale: 0,
+      cost: 180.00
     },
     stock: 5,
     maxStock: 50,
@@ -127,7 +129,8 @@ export const _products: PRODUCT[] = [
     gender: 'men',
     prices: {
       regular: 45.00,
-      sale: 35.00
+      sale: 35.00,
+      cost: 45.00
     },
     stock: 0,
     maxStock: 30,
@@ -151,7 +154,8 @@ export const _products: PRODUCT[] = [
     gender: 'kids',
     prices: {
       regular: 85.00,
-      sale: 0
+      sale: 0,
+      cost: 85.00
     },
     stock: 120,
     maxStock: 200,
@@ -175,7 +179,8 @@ export const _products: PRODUCT[] = [
     gender: 'woman',
     prices: {
       regular: 95.00,
-      sale: 79.99
+      sale: 79.99,
+      cost: 95.00
     },
     stock: 42,
     maxStock: 80,
@@ -199,7 +204,8 @@ export const _products: PRODUCT[] = [
     gender: 'men',
     prices: {
       regular: 110.00,
-      sale: 0
+      sale: 0,
+      cost: 110.00
     },
     stock: 2,
     maxStock: 40,
@@ -223,7 +229,8 @@ export const _products: PRODUCT[] = [
     gender: 'woman',
     prices: {
       regular: 150.00,
-      sale: 129.00
+      sale: 129.00,
+      cost: 150.00
     },
     stock: 60,
     maxStock: 150,
@@ -247,7 +254,8 @@ export const _products: PRODUCT[] = [
     gender: 'kids',
     prices: {
       regular: 65.00,
-      sale: 0
+      sale: 0,
+      cost: 65.00
     },
     stock: 89,
     maxStock: 120,
@@ -271,7 +279,8 @@ export const _products: PRODUCT[] = [
     gender: 'men',
     prices: {
       regular: 35.00,
-      sale: 28.00
+      sale: 28.00,
+      cost: 35.00
     },
     stock: 0,
     maxStock: 100,
@@ -295,7 +304,8 @@ export const _products: PRODUCT[] = [
     gender: 'woman',
     prices: {
       regular: 55.00,
-      sale: 0
+      sale: 0,
+      cost: 55.00
     },
     stock: 14,
     maxStock: 40,

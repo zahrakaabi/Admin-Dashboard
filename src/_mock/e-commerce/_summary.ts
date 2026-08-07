@@ -5,7 +5,7 @@ export interface ProductSummary {
   percent: number;
   trend: "up" | "down";
   chart: number[];
-  chartColor: string;
+  chartColor: string[];
 }
 
 export const PRODUCT_SUMMARY: ProductSummary[] = [
@@ -16,7 +16,7 @@ export const PRODUCT_SUMMARY: ProductSummary[] = [
     percent: 2.6,
     trend: "up",
     chart: [32, 41, 38, 55, 48, 67, 73],
-    chartColor: 'blue'
+    chartColor: ['green']
   },
   {
     id: "total-balance",
@@ -25,7 +25,7 @@ export const PRODUCT_SUMMARY: ProductSummary[] = [
     percent: -0.1,
     trend: "down",
     chart: [95, 91, 88, 90, 84, 82, 80],
-    chartColor: 'green'
+    chartColor: ['orange']
   },
   {
     id: "sales-profit",
@@ -34,6 +34,6 @@ export const PRODUCT_SUMMARY: ProductSummary[] = [
     percent: 0.6,
     trend: "up",
     chart: [20, 26, 24, 30, 37, 41, 45],
-    chartColor: 'red'
+    chartColor: ['red']
   },
 ];

@@ -8,35 +8,52 @@ import type { ApexOptions } from "apexcharts";
 // UI Lib Components
 import Chart from "react-apexcharts";
 
+// Types
+import type { ChartSeriesItem } from "@/types";
+
 /* -------------------------------------------------------------------------- */
 /*                         SPARK LINE CHART COMPONENT                         */
 /* -------------------------------------------------------------------------- */
 interface SparklineChartProps {
-  data: number[];
+  data: number[] | ChartSeriesItem[];
   categories?: string[];
-  color?: string;
-  name?: string;
+  color?: string | string[];
   height?: number;
-}
+  name?: string;
+  showSparkline?: boolean
+};
 
 function SparklineChart({
   data,
   categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-  color = "#22c55e",
-  name,
+  color,
+  name = "Series",
   height = 80,
+  showSparkline,
 }: SparklineChartProps) {
 /* --------------------------------- CONSTS --------------------------------- */
-  const series = useMemo(
-    () => [{ name, data }],
-    [name, data]
-  );
+  const series: ChartSeriesItem[] = useMemo(() => {
+    if (Array.isArray(data) && typeof data[0] === "number") {
+      return [{ name, data: data as number[] }];
+    }
+    return data as ChartSeriesItem[];
+  }, [name, data]);
 
+  const isMultiLine = series.length > 1;
+
+  const chartColors = useMemo(() => {
+    if (Array.isArray(color)) return color;
+    return isMultiLine ? [color || "#1f2937", "#FFAB00", "#00B8D9"] : [color || "#1f2937"];
+  }, [color, isMultiLine]);
+
+  const isSparkline = showSparkline !== undefined ? showSparkline : !isMultiLine;
+
+/* ------------------------------ CHART OPTIONS ----------------------------- */
   const options: ApexOptions = useMemo(
     () => ({
       chart: {
         type: "area",
-        sparkline: { enabled: true },
+        sparkline: { enabled: isSparkline ? true : false },
         toolbar: { show: false },
         zoom: { enabled: false },
       },
@@ -45,62 +62,99 @@ function SparklineChart({
         type: "gradient",
         gradient: {
           shadeIntensity: 0,
-          opacityFrom: 0, //0.32
+          opacityFrom: !isSparkline ? 0.42 : 0,
           opacityTo: 0,
           stops: [0, 100],
         },
       },
-      colors: [color],
+      colors: chartColors,
       dataLabels: { enabled: false },
       markers: { size: 0, hover: { size: 5 } },
-      grid: { show: false },
       xaxis: {
         categories,
-        labels: { show: false },
+        type: "category",
+        labels: {
+          show: !isSparkline,
+          style: { colors: "#94a3b8", fontSize: "12px" },
+        },
         axisBorder: { show: false },
         axisTicks: { show: false },
         tooltip: { enabled: false },
+        crosshairs: {
+          show: !isSparkline,
+          width: 1,
+          position: "back",
+          opacity: 0.9,
+          stroke: {
+            color: "#919EAB",
+            dashArray: 3,
+          },
+        },
       },
-      yaxis: { show: false },
+      yaxis: {
+        show: !isSparkline,
+        labels: {
+          style: { colors: "#94a3b8", fontSize: "12px" },
+          formatter: (val: number) => (val >= 1000 ? `${(val / 1000).toFixed(2)}k` : `${val}`),
+        },
+      },
+      legend: { show: false },
       tooltip: {
         enabled: true,
+        shared: true,
+        intersect: false,
         x: { show: true },
-        y: { formatter: (val: number) => `${val.toLocaleString()}` },
         marker: { show: false },
-        custom: ({ series, seriesIndex, dataPointIndex, w }) => {
-            const value = series[seriesIndex][dataPointIndex];
-            const month = w.globals.categoryLabels[dataPointIndex] ?? w.globals.labels[dataPointIndex];
+        custom: ({ series: seriesData, seriesIndex, dataPointIndex, w }) => {
+          const month = w.globals.categoryLabels[dataPointIndex] ?? w.globals.labels[dataPointIndex];
+
+          // Single Line Custom Tooltip
+          if (!isMultiLine) {
+            const value = seriesData[seriesIndex][dataPointIndex];
             const dotColor = w.globals.colors[seriesIndex];
 
             return `
-            <div style="display: flex; flex-direction: column; align-items: center">
-                <span style="
-                    background: #e2e2e2;
-                    margin: 0;
-                    color: #374151;
-                    padding: 1px 12px;
-                    border-radius: 4px;
-                    display: inline-block;
-                ">
+              <div style="display: flex; flex-direction: column; align-items: center; padding: 6px;">
+                <span style="background: #e2e2e2; margin: 0; color: #374151; padding: 1px 12px; border-radius: 4px; display: inline-block;">
                   ${month}
                 </span>
-                <div style="display: flex; align-items: center; gap: 6px; padding: 1px 12px;">
-                    <span style="
-                    margin: 0;
-                        width: 8px;
-                        height: 8px;
-                        border-radius: 50%;
-                        background: ${dotColor};
-                        display: inline-block;
-                    "></span>
-                    <span style="font-weight: 600;">${value.toLocaleString()}</span>
+                <div style="display: flex; align-items: center; gap: 6px; padding: 4px 12px 1px 12px;">
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: ${dotColor}; display: inline-block;"></span>
+                  <span style="font-weight: 600;">${value.toLocaleString()}</span>
                 </div>
-            </div>
+              </div>
             `;
+          }
+
+          // Multi-Line Custom Tooltip (2+ lines)
+          const rowsHtml = w.globals.seriesNames
+            .map((seriesName: string, idx: number) => {
+              const val = seriesData[idx][dataPointIndex];
+              const dotColor = w.globals.colors[idx];
+              return `
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 4px;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: ${dotColor}; display: inline-block;"></span>
+                    <span style="color: #64748b; font-size: 12px;">${seriesName}:</span>
+                  </div>
+                  <span style="font-weight: 600; font-size: 13px; color: #0f172a;">${val.toLocaleString()}</span>
+                </div>
+              `;
+            })
+            .join("");
+
+          return `
+            <div style="background: #ffffff; padding: 8px 12px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border: 1px solid #f1f5f9;">
+              <div style="font-weight: 600; font-size: 12px; color: #00a76f; text-align: center; margin-bottom: 2px;">
+                ${month}
+              </div>
+              ${rowsHtml}
+            </div>
+          `;
         },
       },
     }),
-    [color, categories]
+    [chartColors, categories, isSparkline, isMultiLine]
   );
 
 /* -------------------------------- RENDERING ------------------------------- */

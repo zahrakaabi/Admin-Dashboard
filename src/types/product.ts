@@ -12,6 +12,7 @@ export type PRODUCT = {
   prices: {
     regular: number;
     sale: number;
+    cost: number
   };
   stock: number;
   maxStock: number;

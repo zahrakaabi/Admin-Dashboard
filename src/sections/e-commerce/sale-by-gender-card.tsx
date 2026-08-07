@@ -14,10 +14,10 @@ function SaleByGenderCard() {
     <div className="flex flex-col gap-2 p-4 rounded-lg bg-white shadow-lg">
         <CardTitle title="Sale by Gender" />
         <RadialChart 
-            data={[84, 97, 61]} 
-            labels={['Woman', 'Man', 'Kids']}
-            colors={["#00A76F", "#FFAB00", "#FF5630"]}
-            height={280} 
+          data={[84, 97, 61]} 
+          labels={['Woman', 'Man', 'Kids']}
+          colors={["#00A76F", "#FFAB00", "#FF5630"]}
+          height={280} 
         />
     </div>
   )

@@ -6,6 +6,7 @@ import { Banner } from "@/components/cards";
 import EcommerceFeatured from "../ecommerce-featured";
 import ProductSummaryCard from "../prduct-summary-card";
 import SaleByGenderCard from "../sale-by-gender-card";
+import YearlySalesCard from "../yearly-sales-card";
 
 // Utils
 import { PRODUCT_SUMMARY } from "@/_mock";
@@ -45,6 +46,7 @@ function EcommerceView() {
         </div>
 
         <SaleByGenderCard />
+        <YearlySalesCard />
     </div>
   )
 };
