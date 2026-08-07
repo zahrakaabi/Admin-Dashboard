@@ -3,8 +3,10 @@
 /* -------------------------------------------------------------------------- */
 // Packages
 import { useMemo } from "react";
-import Chart from "react-apexcharts";
 import type { ApexOptions } from "apexcharts";
+
+// UI Lib Components
+import Chart from "react-apexcharts";
 
 /* -------------------------------------------------------------------------- */
 /*                         SPARK LINE CHART COMPONENT                         */
@@ -80,7 +82,7 @@ function SparklineChart({
                     border-radius: 4px;
                     display: inline-block;
                 ">
-                    ${month}
+                  ${month}
                 </span>
                 <div style="display: flex; align-items: center; gap: 6px; padding: 1px 12px;">
                     <span style="
@@ -101,6 +103,7 @@ function SparklineChart({
     [color, categories]
   );
 
+/* -------------------------------- RENDERING ------------------------------- */
   return (
     <Chart options={options} series={series} type="area" width="100%" height={height} />
   );

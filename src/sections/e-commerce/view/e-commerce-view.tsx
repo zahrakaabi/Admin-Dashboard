@@ -5,6 +5,7 @@
 import { Banner } from "@/components/cards";
 import EcommerceFeatured from "../ecommerce-featured";
 import ProductSummaryCard from "../prduct-summary-card";
+import SaleByGenderCard from "../sale-by-gender-card";
 
 // Utils
 import { PRODUCT_SUMMARY } from "@/_mock";
@@ -40,8 +41,10 @@ function EcommerceView() {
         <EcommerceFeatured />
 
         <div className="flex flex-wrap gap-6">
-            {PRODUCT_SUMMARY.map((summary) => <ProductSummaryCard summary={summary} />)}
+          {PRODUCT_SUMMARY.map((summary) => <ProductSummaryCard summary={summary} />)}
         </div>
+
+        <SaleByGenderCard />
     </div>
   )
 };
