@@ -27,7 +27,7 @@ import { RHFCheckbox } from "./rhf-checkbox";
 /* -------------------------------------------------------------------------- */
 type RHFSelectProps = {
   name: string
-  label: string;
+  label?: string;
   placeholder: string,
   children?: React.ReactNode
 };

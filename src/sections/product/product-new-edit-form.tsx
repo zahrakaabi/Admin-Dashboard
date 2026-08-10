@@ -65,6 +65,7 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
           return value <= regular;
         })
         .required('Sale price is required'),
+      cost: Yup.number().min(0).required('Cost price is required')
     }),
 
     images: Yup.array()
@@ -105,6 +106,7 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
       prices: {
         regular: currentProduct?.prices?.regular || 0,
         sale: currentProduct?.prices?.sale || 0,
+        cost: currentProduct?.prices?.cost || 0
       },
       images: (currentProduct?.images || []) as (string | File)[],
       colors: currentProduct?.colors || [],

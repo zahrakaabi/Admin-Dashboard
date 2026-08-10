@@ -19,11 +19,7 @@ function ProductEditView() {
   const currentProduct = products.find((product) => product.id === productId);
   
 /* -------------------------------- RENDERING ------------------------------- */
-  return (
-    <div>
-        <ProductNewEditForm currentProduct={currentProduct} />
-    </div>
-  )
+  return <ProductNewEditForm currentProduct={currentProduct} />
 };
 
 export default ProductEditView;

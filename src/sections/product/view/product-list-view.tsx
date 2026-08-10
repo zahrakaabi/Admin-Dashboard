@@ -2,6 +2,7 @@
 /*                                DEPENDENCIES                                */
 /* -------------------------------------------------------------------------- */
 // Packages
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
 
 // UI Lib Components
@@ -9,19 +10,39 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components
 
 // UI Local Components
 import ProductTableRow from "../product-table-row";
+import ProductTableToolbar from "../product-table-toolbar";
 
 // Utils
 import { useProducts } from "../context/use-products";
 import { paths } from "@/routes/paths";
+import type { PRODUCT, IProductTableFilters, IProductTableFilterValue } from "@/types";
 
 /* -------------------------------------------------------------------------- */
 /*                         PRODUCT LIST VIEW COMPONENT                        */
 /* -------------------------------------------------------------------------- */
 function ProductListView() {
-/* --------------------------------- CONSTS --------------------------------- */
+/* ---------------------------------- HOOKS --------------------------------- */
+  const [filters, setFilters] = useState<IProductTableFilters>({ search: '', stockStatus: [] });
   const { products } = useProducts();
   const navigate = useNavigate();
 
+/* ----------------------------- HANDLE FILTERS ----------------------------- */
+  const handleFilters = useCallback(
+    (name: string, value: IProductTableFilterValue) => {
+      // table.onResetPage();
+      setFilters((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }, []
+  );
+
+  const dataFiltered = applyFilter({
+    inputData: products,
+    filters
+  });
+
+/* --------------------------------- CONSTS --------------------------------- */
   const TABLE_HEAD = [
     { label: 'Product', minWidth: 200 },
     { label: 'Create at', minWidth: 200 },
@@ -42,6 +63,12 @@ function ProductListView() {
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <div className="mx-auto">
+      <ProductTableToolbar
+        filters={filters}
+        onFilters={handleFilters}
+        data={dataFiltered}
+      />
+
       <Table>
         <TableHeader>
           <TableRow className="bg-gray-50 dark:bg-gray-700">
@@ -51,7 +78,7 @@ function ProductListView() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.map((row, index) => <ProductTableRow 
+          {dataFiltered.map((row, index) => <ProductTableRow 
             key={index} 
             row={row}
             onDeleteRow={() => handleDeleteRow(row.id)}
@@ -64,3 +91,34 @@ function ProductListView() {
 };
 
 export default ProductListView;
+
+
+/* -------------------------------------------------------------------------- */
+/*                           APPLY FILTER HELPER                              */
+/* -------------------------------------------------------------------------- */
+function applyFilter({
+  inputData,
+  filters
+}: {
+  inputData: PRODUCT[];
+  filters: IProductTableFilters;
+}) {
+/* -------------------------------- CONSTANTS ------------------------------- */
+  const { search, stockStatus } = filters;
+
+  if (search) {
+    inputData = inputData?.filter(
+      (product) => product.title.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
+  };
+
+  if (stockStatus.length) {
+    const normalizedStatus = stockStatus.map((stockStatus) => stockStatus.toLowerCase());
+    inputData = inputData?.filter((product) =>
+      normalizedStatus.includes(product.inventoryType.toLowerCase())
+    );
+  };
+
+/* -------------------------------- RENDERING ------------------------------- */
+  return inputData;
+};

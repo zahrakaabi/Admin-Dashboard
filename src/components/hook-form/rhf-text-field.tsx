@@ -12,7 +12,7 @@ import { Input, Label, Textarea } from "../ui";
 /* -------------------------------------------------------------------------- */
 type TextFieldProps = {
   type: string;
-  label: string;
+  label?: string;
   name: string;
   placeholder: string;
 };

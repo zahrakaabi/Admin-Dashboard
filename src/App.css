@@ -163,7 +163,35 @@
   transform: translateY(-50%);
 }
 
+/* ------------------------------ CHARTS STYLES ----------------------------- */
 .apexcharts-tooltip {
   padding: 0 !important;
   border: none !important;
+}
+
+/* --------------------------- PRINT TABLE STYLES --------------------------- */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .overflow-auto,
+  .overflow-x-auto {
+    overflow: visible !important;
+  }
 }

@@ -1,5 +1,6 @@
 export * from './card';
 export * from './input';
+export * from './input-group';
 export * from './textarea';
 export * from './label';
 export * from './separator';

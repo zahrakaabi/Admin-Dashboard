@@ -23,3 +23,10 @@ export type PRODUCT = {
   inventoryType: 'in stock' | 'out of stock' | 'low stock';
   creationAt: Date;
 };
+
+export type IProductTableFilters = {
+  search: string,
+  stockStatus: string[]
+};
+
+export type IProductTableFilterValue = string | string[];
