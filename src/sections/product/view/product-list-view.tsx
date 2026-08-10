@@ -4,11 +4,13 @@
 // Packages
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
+import isEqual from 'lodash/isEqual';
 
 // UI Lib Components
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui";
 
 // UI Local Components
+import ProductTableFiltersResult from "../product-table-filters-result";
 import ProductTableRow from "../product-table-row";
 import ProductTableToolbar from "../product-table-toolbar";
 
@@ -20,13 +22,23 @@ import type { PRODUCT, IProductTableFilters, IProductTableFilterValue } from "@/
 /* -------------------------------------------------------------------------- */
 /*                         PRODUCT LIST VIEW COMPONENT                        */
 /* -------------------------------------------------------------------------- */
+const defaultFilters: IProductTableFilters = {
+  search: '',
+  stockStatus: []
+};
+
 function ProductListView() {
 /* ---------------------------------- HOOKS --------------------------------- */
-  const [filters, setFilters] = useState<IProductTableFilters>({ search: '', stockStatus: [] });
+  const [filters, setFilters] = useState(defaultFilters);
   const { products } = useProducts();
   const navigate = useNavigate();
 
 /* ----------------------------- HANDLE FILTERS ----------------------------- */
+  const dataFiltered = applyFilter({
+    inputData: products,
+    filters
+  });
+
   const handleFilters = useCallback(
     (name: string, value: IProductTableFilterValue) => {
       // table.onResetPage();
@@ -37,10 +49,12 @@ function ProductListView() {
     }, []
   );
 
-  const dataFiltered = applyFilter({
-    inputData: products,
-    filters
-  });
+  const handleResetFilters = useCallback(() => {
+    setFilters(defaultFilters);
+  }, []);
+
+  const canReset = !isEqual(defaultFilters, filters);
+  //const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
 /* --------------------------------- CONSTS --------------------------------- */
   const TABLE_HEAD = [
@@ -62,14 +76,26 @@ function ProductListView() {
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
-    <div className="mx-auto">
+    <div className="mx-auto w-full max-w-7xl rounded-xl border shadow-sm">
+      {/* -------------------------- START PRODUCT FILTERS ------------------------- */}
       <ProductTableToolbar
         filters={filters}
         onFilters={handleFilters}
         data={dataFiltered}
       />
 
-      <Table>
+      {canReset && (
+        <ProductTableFiltersResult
+          filters={filters}
+          onFilters={handleFilters}
+          onResetFilters={handleResetFilters}
+          results={dataFiltered.length}
+        />
+      )}
+      {/* --------------------------- END PRODUCT FILTERS -------------------------- */}
+
+      {/* --------------------------- START PRODUCT LIST --------------------------- */}
+      <Table className="mt-4">
         <TableHeader>
           <TableRow className="bg-gray-50 dark:bg-gray-700">
             {TABLE_HEAD.map((head) => <TableHead key={head.label} className="text-[#637381] font-semibold">
@@ -86,6 +112,7 @@ function ProductListView() {
           />)}
         </TableBody>
       </Table>
+      {/* ---------------------------- END PRODUCT LIST ---------------------------- */}
     </div>
   )
 };

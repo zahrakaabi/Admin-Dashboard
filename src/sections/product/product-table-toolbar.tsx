@@ -4,6 +4,7 @@
 // Packages
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { isEqual } from "lodash";
 
 // UI Lib Components
 import { 
@@ -36,17 +37,27 @@ type Props = {
 
 function ProductTableToolbar({ filters, onFilters, data }: Props) {
 /* --------------------------- HANDLE STOCK STATUS -------------------------- */
-  const methods = useForm({ 
-    defaultValues: { stockStatus: filters.stockStatus }
+  const methods = useForm({
+    defaultValues: { stockStatus: filters.stockStatus },
   });
 
-  const { watch } = methods;
+  const { watch, setValue } = methods;
   const stockStatus = watch('stockStatus');
-  
+
   useEffect(() => {
-    onFilters('stockStatus', stockStatus);
+    if (!isEqual(stockStatus, filters.stockStatus)) {
+      onFilters('stockStatus', stockStatus);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stockStatus]);
+
+  // filters -> form (external change: badge removed, reset, etc.)
+  useEffect(() => {
+    if (!isEqual(filters.stockStatus, stockStatus)) {
+      setValue('stockStatus', filters.stockStatus);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters.stockStatus]);
 
 /* ------------------------------ HANDLE SEARCH ----------------------------- */
   const handleSearch = useCallback(
@@ -58,39 +69,39 @@ function ProductTableToolbar({ filters, onFilters, data }: Props) {
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
-    <div className="flex flex-between">
+    <div className="flex flex-between px-4 md:px-6 p-4">
       <div className="flex items-end gap-4 w-full max-w-l mx-auto">
-        <div className="w-full max-w-[10rem]">
-            <FormProvider methods={methods}>
-                <RHFMultiSelect
-                    name="stockStatus"
-                    placeholder="Stock"
-                    options={['In stock', 'Out of stock', 'Low stock']}
-                />
-            </FormProvider>
+        <div className="w-full max-w-[13rem]">
+          <FormProvider methods={methods}>
+            <RHFMultiSelect
+              name="stockStatus"
+              placeholder="Stock"
+              options={['In stock', 'Out of stock', 'Low stock']}
+            />
+          </FormProvider>
         </div>
 
         <div className="w-full max-w-[20rem]">
-            <InputGroup>
-                <InputGroupInput 
-                    className="w-full outline-none" 
-                    placeholder="Search..."
-                    value={filters.search}
-                    onChange={handleSearch}
-                />
-                <InputGroupAddon align="inline-start">
-                    <Search className="text-muted-foreground" />
-                </InputGroupAddon>
-            </InputGroup>
+          <InputGroup>
+            <InputGroupInput 
+              className="w-full outline-none" 
+              placeholder="Search..."
+              value={filters.search}
+              onChange={handleSearch}
+            />
+            <InputGroupAddon align="inline-start">
+              <Search className="text-muted-foreground" />
+            </InputGroupAddon>
+          </InputGroup>
         </div>
       </div>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="border-none px-0 shadow-none gap-2">
-                <Download className="h-4 w-4" />
-                Export
-            </Button>
+          <Button variant="outline" className="border-none px-0 shadow-none gap-2">
+            <Download className="h-4 w-4" />
+            Export
+          </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" className="w-44">
