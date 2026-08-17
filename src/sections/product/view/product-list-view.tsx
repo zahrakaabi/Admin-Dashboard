@@ -13,6 +13,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components
 import ProductTableFiltersResult from "../product-table-filters-result";
 import ProductTableRow from "../product-table-row";
 import ProductTableToolbar from "../product-table-toolbar";
+import { TablePaginationCustom, useTable } from "@/components/table";
 
 // Utils
 import { useProducts } from "../context/use-products";
@@ -32,6 +33,7 @@ function ProductListView() {
   const [filters, setFilters] = useState(defaultFilters);
   const { products } = useProducts();
   const navigate = useNavigate();
+  const table = useTable();
 
 /* ----------------------------- HANDLE FILTERS ----------------------------- */
   const dataFiltered = applyFilter({
@@ -104,7 +106,11 @@ function ProductListView() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {dataFiltered.map((row, index) => <ProductTableRow 
+          {dataFiltered?.slice(
+              table.page * table.rowsPerPage,
+              table.page * table.rowsPerPage + table.rowsPerPage
+            )
+            ?.map((row, index) => <ProductTableRow 
             key={index} 
             row={row}
             onDeleteRow={() => handleDeleteRow(row.id)}
@@ -112,6 +118,14 @@ function ProductListView() {
           />)}
         </TableBody>
       </Table>
+
+      <TablePaginationCustom
+        count={dataFiltered.length}
+        page={table.page}
+        rowsPerPage={table.rowsPerPage}
+        onPageChange={table.onChangePage}
+        onRowsPerPageChange={table.onChangeRowsPerPage}
+      />
       {/* ---------------------------- END PRODUCT LIST ---------------------------- */}
     </div>
   )

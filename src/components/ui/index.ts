@@ -19,3 +19,5 @@ export * from './sheet';
 export * from './skeleton';
 export * from './carousel';
 export * from './badge';
+export * from './pagination';
+export * from './field';
