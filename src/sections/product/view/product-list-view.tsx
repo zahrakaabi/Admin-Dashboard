@@ -13,7 +13,13 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components
 import ProductTableFiltersResult from "../product-table-filters-result";
 import ProductTableRow from "../product-table-row";
 import ProductTableToolbar from "../product-table-toolbar";
-import { TablePaginationCustom, useTable } from "@/components/table";
+import { 
+  emptyRows, 
+  TableEmptyRows, 
+  TableNoData, 
+  TablePaginationCustom, 
+  useTable 
+} from "@/components/table";
 
 // Utils
 import { useProducts } from "../context/use-products";
@@ -55,8 +61,9 @@ function ProductListView() {
     setFilters(defaultFilters);
   }, []);
 
+  const denseHeight = table.dense ? 56 : 56 + 20;
   const canReset = !isEqual(defaultFilters, filters);
-  //const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
+  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
 /* --------------------------------- CONSTS --------------------------------- */
   const TABLE_HEAD = [
@@ -117,6 +124,13 @@ function ProductListView() {
               onEditRow={() => handleEditRow(row.id)}
             />
           )}
+
+          <TableEmptyRows
+            height={denseHeight}
+            emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+          />
+
+          <TableNoData notFound={notFound} />
         </TableBody>
       </Table>
 
