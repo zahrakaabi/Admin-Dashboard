@@ -111,11 +111,12 @@ function ProductListView() {
               table.page * table.rowsPerPage + table.rowsPerPage
             )
             ?.map((row, index) => <ProductTableRow 
-            key={index} 
-            row={row}
-            onDeleteRow={() => handleDeleteRow(row.id)}
-            onEditRow={() => handleEditRow(row.id)}
-          />)}
+              key={index} 
+              row={row}
+              onDeleteRow={() => handleDeleteRow(row.id)}
+              onEditRow={() => handleEditRow(row.id)}
+            />
+          )}
         </TableBody>
       </Table>
 

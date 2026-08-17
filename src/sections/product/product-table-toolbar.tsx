@@ -51,7 +51,7 @@ function ProductTableToolbar({ filters, onFilters, data }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stockStatus]);
 
-  // filters -> form (external change: badge removed, reset, etc.)
+  // filters -> form (external change: reset, etc.)
   useEffect(() => {
     if (!isEqual(filters.stockStatus, stockStatus)) {
       setValue('stockStatus', filters.stockStatus);
@@ -98,7 +98,7 @@ function ProductTableToolbar({ filters, onFilters, data }: Props) {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="border-none px-0 shadow-none gap-2">
+          <Button variant="outline" className="border-none px-0 shadow-none gap-2 cursor-pointer">
             <Download className="h-4 w-4" />
             Export
           </Button>

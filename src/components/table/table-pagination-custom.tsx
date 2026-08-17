@@ -135,6 +135,7 @@ function TablePaginationCustom({
       {/* Pagination buttons */}
       <div className="flex items-center">
         <Button
+          className="cursor-pointer"
           variant="ghost"
           size="icon"
           disabled={!canGoPrevious}
@@ -145,6 +146,7 @@ function TablePaginationCustom({
         </Button>
 
         <Button
+          className="cursor-pointer"
           variant="ghost"
           size="icon"
           disabled={!canGoNext}
