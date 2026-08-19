@@ -7,6 +7,7 @@ import { useMemo, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSnackbar } from 'notistack';
+import { useNavigate } from "react-router";
 
 // UI Lib Components
 import { SelectGroup, SelectItem, SelectLabel } from "@/components/ui";
@@ -32,6 +33,7 @@ import {
 import type { PRODUCT } from '@/types';
 import { useBoolean } from '@/hooks';
 import { useProducts } from './context/use-products';
+import { paths } from '@/routes/paths';
 
 /* -------------------------------------------------------------------------- */
 /*                              PRODUCT ADD VIEW                              */
@@ -45,6 +47,7 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
   const loadingSend = useBoolean(false);
   const { addProduct } = useProducts();
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
 /* ---------------------------- VALIDATION SCHEMA --------------------------- */
   const NewCurrentProductSchema = Yup.object().shape({
@@ -158,23 +161,32 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
 
       const productPayload = {
         ...data,
-        id: `prod-${Date.now()}`,
+        id: currentProduct ? currentProduct.id : `prod-${Date.now()}`,
         slug: data.title
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)+/g, ''),
-        sku: `SKU-${data.code}-${Math.floor(Math.random() * 1000)}`,
+        sku: currentProduct ? currentProduct.sku : `SKU-${data.code}-${Math.floor(Math.random() * 1000)}`,
         parentCategory: data.category === 'Clothing' ? 'Clothing' : 'Accessories',
-        status: 'new',
+        status: currentProduct ? currentProduct.status : 'new',
         inventoryType: getInventoryStatus(data.stock),
-        creationAt: new Date(),
+        creationAt: currentProduct ? currentProduct.creationAt : new Date(),
         images: data.images.filter((img) => img !== undefined) as (string | File)[],
-        maxStock: 200
+        maxStock: 200,
       };
 
+      // if (currentProduct) {
+      //   updateProduct(productPayload);
+      //   enqueueSnackbar('Update with success!');
+      // } else {
+      //   addProduct(productPayload);
+      //   enqueueSnackbar('Created with success!');
+      // }
       addProduct(productPayload);
       enqueueSnackbar('Update with success!');
+
       reset();
+      navigate(paths.dashboard.product.list);
     } catch (error) {
       console.error(error);
       enqueueSnackbar("Something went wrong. Please try again.", { variant: "error" });
@@ -304,8 +316,8 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
           />
 
           {/* SUBMIT BUTTON */}
-          <button type="submit" className="px-6 py-3 bg-gray-800 self-end rounded-lg text-white hover:bg-gray-900 transition font-medium text-sm font-sans">
-            Create Product
+          <button type="submit" className="px-6 py-3 bg-blue-500 self-end rounded-lg text-white hover:bg-gray-900 transition font-medium text-sm font-sans">
+            {currentProduct ? 'Save changes' : 'Create'}
           </button>
         </div>
       </FormProvider>
