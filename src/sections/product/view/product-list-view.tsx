@@ -5,6 +5,7 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
 import isEqual from 'lodash/isEqual';
+import { useSnackbar } from "notistack";
 
 // UI Lib Components
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui";
@@ -37,9 +38,10 @@ const defaultFilters: IProductTableFilters = {
 function ProductListView() {
 /* ---------------------------------- HOOKS --------------------------------- */
   const [filters, setFilters] = useState(defaultFilters);
-  const { products } = useProducts();
+  const { products, deleteProduct } = useProducts();
   const navigate = useNavigate();
   const table = useTable();
+  const { enqueueSnackbar } = useSnackbar();
 
 /* ----------------------------- HANDLE FILTERS ----------------------------- */
   const dataFiltered = applyFilter({
@@ -75,8 +77,9 @@ function ProductListView() {
   ];
 
 /* ------------------------------- HANDLE ROW ------------------------------- */
-  const handleDeleteRow = (productId: string) => {
-    console.log('Delete product with id:', productId);
+  const handleDeleteRow = (rowId: string) => {
+    deleteProduct(rowId);
+    enqueueSnackbar('Deleted successfully !');
   };
 
   const handleEditRow = (productId: string) => {

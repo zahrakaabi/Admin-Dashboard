@@ -11,6 +11,8 @@ import { CustomPopover } from "@/components/custom-popover";
 // Utils
 import type { PRODUCT } from "@/types";
 import { fDate, fTime } from "@/utils";
+import { ConfirmDialog } from "@/components/custom-dialog";
+import { useBoolean } from "@/hooks";
 
 /* -------------------------------------------------------------------------- */
 /*                         PRODUCT TABLE ROW COMPONENT                        */
@@ -26,6 +28,9 @@ function ProductTableRow({
   onDeleteRow,
   onEditRow
 }: Props) {
+/* ---------------------------------- HOOKS --------------------------------- */
+  const confirm = useBoolean();
+
 /* --------------------------------- CONSTS --------------------------------- */
   const {
     title, 
@@ -88,74 +93,94 @@ function ProductTableRow({
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
-    <TableRow>
-      <TableCell className="max-w-xs p-4">
-        <div className="flex items-center gap-3">
-          {renderProductPreview(images, title)}
-          <div className="flex flex-col gap-1">
-            <h1 className="text-sm font-semibold whitespace-nowrap text-ellipsis overflow-hidden 
-            cursor-pointer hover:text-blue-500 hover:underline transition-all duration-200">
-              <a>{title ? title : 'Title'}</a>
-            </h1>
+    <>
+      <TableRow>
+        <TableCell className="max-w-xs p-4">
+          <div className="flex items-center gap-3">
+            {renderProductPreview(images, title)}
+            <div className="flex flex-col gap-1">
+              <h1 className="text-sm font-semibold whitespace-nowrap text-ellipsis overflow-hidden 
+              cursor-pointer hover:text-blue-500 hover:underline transition-all duration-200">
+                <a>{title ? title : 'Title'}</a>
+              </h1>
+              <h2 className="text-sm font-normal text-[#919EAB] cursor-text">
+                {category}
+              </h2>
+            </div>
+          </div>
+        </TableCell>
+        
+        <TableCell className="text-sm font-normal">
+          <div className="flex flex-col gap-1 p-4">
+            <span className="hover:text-blue-500 transition-all duration-200">
+              {creationAt ? fDate(creationAt) : fDate(new Date())}
+            </span>
+            <span className="text-sm lowercase font-normal text-[#919EAB]">
+              {creationAt ? fTime(creationAt) : fTime(new Date())}
+            </span>
+          </div>
+        </TableCell>
+
+        <TableCell className="text-sm p-4">
+          <div className="flex flex-col gap-2">
+            <div className="h-1 w-[5rem] overflow-hidden rounded-full bg-gray-200">
+              <div
+                className={`h-full rounded-full transition-all duration-300 ease-in-out ${color}`}
+                style={{ width: `${percentage}%` }}
+              />
+            </div>
             <h2 className="text-sm font-normal text-[#919EAB] cursor-text">
-              {category}
+              {getStockLabel()}
             </h2>
           </div>
-        </div>
-      </TableCell>
-      
-      <TableCell className="text-sm font-normal">
-        <div className="flex flex-col gap-1 p-4">
-          <span className="hover:text-blue-500 transition-all duration-200">
-            {creationAt ? fDate(creationAt) : fDate(new Date())}
-          </span>
-          <span className="text-sm lowercase font-normal text-[#919EAB]">
-            {creationAt ? fTime(creationAt) : fTime(new Date())}
-          </span>
-        </div>
-      </TableCell>
+        </TableCell>
 
-      <TableCell className="text-sm p-4">
-        <div className="flex flex-col gap-2">
-          <div className="h-1 w-[5rem] overflow-hidden rounded-full bg-gray-200">
-            <div
-              className={`h-full rounded-full transition-all duration-300 ease-in-out ${color}`}
-              style={{ width: `${percentage}%` }}
-            />
-          </div>
-          <h2 className="text-sm font-normal text-[#919EAB] cursor-text">
-            {getStockLabel()}
-          </h2>
-        </div>
-      </TableCell>
+        <TableCell className="text-sm font-normal p-4 hover:text-blue-500 transition-all duration-200">${sale}</TableCell>
 
-      <TableCell className="text-sm font-normal p-4 hover:text-blue-500 transition-all duration-200">${sale}</TableCell>
+        <TableCell align="right">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="border-0 shadow-none bg-transparent rounded-full cursor-pointer">
+                <EllipsisVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
 
-      <TableCell align="right">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="border-0 shadow-none bg-transparent rounded-full cursor-pointer">
-              <EllipsisVertical className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
+            <CustomPopover align="end">
+              <DropdownMenuItem className="cursor-pointer">
+                <Eye />
+                <span>View</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={onEditRow}>
+                <Pencil />
+                <span>Edit</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={confirm.onTrue}>
+                <Trash2 className="text-orange-500 " />
+                <span className="text-orange-500">Delete</span>
+              </DropdownMenuItem>
+            </CustomPopover>
+          </DropdownMenu>
+        </TableCell>
+      </TableRow>
 
-          <CustomPopover align="end">
-            <DropdownMenuItem className="cursor-pointer">
-              <Eye />
-              <span>View</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer" onClick={onEditRow}>
-              <Pencil />
-              <span>Edit</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer" onClick={onDeleteRow}>
-              <Trash2 className="text-orange-500 " />
-              <span className="text-orange-500">Delete</span>
-            </DropdownMenuItem>
-          </CustomPopover>
-        </DropdownMenu>
-      </TableCell>
-    </TableRow>
+      <ConfirmDialog
+        open={confirm.value}
+        onClose={confirm.onFalse}
+        title="Delete"
+        content="Are you sure want to delete?"
+        action={
+          <Button 
+            className="bg-red-500" 
+            onClick={() => {
+              onDeleteRow();
+              confirm.onFalse();
+            }}
+          >
+            Delete
+          </Button>
+        }
+      />
+    </>
   )
 };
 

@@ -2,7 +2,7 @@
 /*                                DEPENDENCIES                                */
 /* -------------------------------------------------------------------------- */
 // Packages
-import { createContext, useMemo, useState } from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 
 // Utils
 import type { PRODUCT } from "@/types";
@@ -14,6 +14,7 @@ import { _products } from "@/_mock";
 type ProductContextType = {
   products: PRODUCT[];
   addProduct: (newProduct: PRODUCT) => void;
+  deleteProduct: (productId: string) => void;
 };
 
 export const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -21,14 +22,19 @@ export const ProductContext = createContext<ProductContextType | undefined>(unde
 export function ProductProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<PRODUCT[]>(_products);
 
-  const addProduct = (newProduct: PRODUCT) => {
+  const addProduct = useCallback((newProduct: PRODUCT) => {
     setProducts((prev) => [newProduct, ...prev]);
-  };
+  }, []);
+
+  const deleteProduct = useCallback((rowId: string) => {
+    setProducts((prev) => prev.filter((row: { id: string }) => row.id !== rowId));
+  }, []);
 
   const memoizedValue = useMemo(() => ({ 
     products, 
-    addProduct 
-  }), [products]);
+    addProduct,
+    deleteProduct 
+  }), [products, addProduct, deleteProduct]);
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
