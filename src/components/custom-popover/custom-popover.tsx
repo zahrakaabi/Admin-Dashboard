@@ -16,7 +16,7 @@ function CustomPopover({ align, children }: customPopoverProps) {
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <DropdownMenuContent align={align}>
-        {children}
+      {children}
     </DropdownMenuContent>
   )
 }

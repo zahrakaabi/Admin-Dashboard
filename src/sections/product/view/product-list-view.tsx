@@ -8,9 +8,11 @@ import isEqual from 'lodash/isEqual';
 import { useSnackbar } from "notistack";
 
 // UI Lib Components
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui";
+import { Plus } from "lucide-react";
+import { Button, Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui";
 
 // UI Local Components
+import { CustomBreadcrumbs } from "@/components/custom-breadcrumbs";
 import ProductTableFiltersResult from "../product-table-filters-result";
 import ProductTableRow from "../product-table-row";
 import ProductTableToolbar from "../product-table-toolbar";
@@ -88,63 +90,85 @@ function ProductListView() {
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
-    <div className="mx-auto w-full max-w-7xl rounded-xl border shadow-sm">
-      {/* -------------------------- START PRODUCT FILTERS ------------------------- */}
-      <ProductTableToolbar
-        filters={filters}
-        onFilters={handleFilters}
-        data={dataFiltered}
+    <div className="mx-auto w-full max-w-7xl">
+      <CustomBreadcrumbs
+        heading='List'
+        links={[
+          { name: 'Dashboard', href: paths.dashboard.root },
+          { name: 'Product', href: paths.dashboard.product.list },
+          { name: 'List', href: paths.dashboard.product.list }
+        ]}
+        action={
+          <Button 
+            className="cursor-pointer" 
+            aria-label="Add product"
+            title="Add product"
+            onClick={() => navigate(paths.dashboard.product.create)}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add product
+          </Button>
+        }
       />
 
-      {canReset && (
-        <ProductTableFiltersResult
+      <div className="rounded-xl border shadow-sm mx-1 mt-8">
+        {/* -------------------------- START PRODUCT FILTERS ------------------------- */}
+        <ProductTableToolbar
           filters={filters}
           onFilters={handleFilters}
-          onResetFilters={handleResetFilters}
-          results={dataFiltered.length}
+          data={dataFiltered}
         />
-      )}
-      {/* --------------------------- END PRODUCT FILTERS -------------------------- */}
 
-      {/* --------------------------- START PRODUCT LIST --------------------------- */}
-      <Table className="mt-4">
-        <TableHeader>
-          <TableRow className="bg-gray-50 dark:bg-gray-700">
-            {TABLE_HEAD.map((head) => <TableHead key={head.label} className="text-[#637381] font-semibold">
-              {head.label}
-            </TableHead>)}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {dataFiltered?.slice(
-              table.page * table.rowsPerPage,
-              table.page * table.rowsPerPage + table.rowsPerPage
-            )
-            ?.map((row, index) => <ProductTableRow 
-              key={index} 
-              row={row}
-              onDeleteRow={() => handleDeleteRow(row.id)}
-              onEditRow={() => handleEditRow(row.id)}
-            />
-          )}
-
-          <TableEmptyRows
-            height={denseHeight}
-            emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+        {canReset && (
+          <ProductTableFiltersResult
+            filters={filters}
+            onFilters={handleFilters}
+            onResetFilters={handleResetFilters}
+            results={dataFiltered.length}
           />
+        )}
+        {/* --------------------------- END PRODUCT FILTERS -------------------------- */}
 
-          <TableNoData notFound={notFound} />
-        </TableBody>
-      </Table>
+        {/* --------------------------- START PRODUCT LIST --------------------------- */}
+        <Table className="mt-4">
+          <TableHeader>
+            <TableRow className="bg-gray-50 dark:bg-gray-700">
+              {TABLE_HEAD.map((head) => <TableHead key={head.label} className="text-[#637381] font-semibold">
+                {head.label}
+              </TableHead>)}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {dataFiltered?.slice(
+                table.page * table.rowsPerPage,
+                table.page * table.rowsPerPage + table.rowsPerPage
+              )
+              ?.map((row, index) => <ProductTableRow 
+                key={index} 
+                row={row}
+                onDeleteRow={() => handleDeleteRow(row.id)}
+                onEditRow={() => handleEditRow(row.id)}
+              />
+            )}
 
-      <TablePaginationCustom
-        count={dataFiltered.length}
-        page={table.page}
-        rowsPerPage={table.rowsPerPage}
-        onPageChange={table.onChangePage}
-        onRowsPerPageChange={table.onChangeRowsPerPage}
-      />
-      {/* ---------------------------- END PRODUCT LIST ---------------------------- */}
+            <TableEmptyRows
+              height={denseHeight}
+              emptyRows={emptyRows(table.page, table.rowsPerPage, dataFiltered.length)}
+            />
+
+            <TableNoData notFound={notFound} />
+          </TableBody>
+        </Table>
+
+        <TablePaginationCustom
+          count={dataFiltered.length}
+          page={table.page}
+          rowsPerPage={table.rowsPerPage}
+          onPageChange={table.onChangePage}
+          onRowsPerPageChange={table.onChangeRowsPerPage}
+        />
+        {/* ---------------------------- END PRODUCT LIST ---------------------------- */}
+      </div>
     </div>
   )
 };

@@ -4,6 +4,9 @@
 // UI Lib Components
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui';
 
+// UI Local Components
+import DownloadButton from './download-button';
+
 // Utils
 import { fileData, fileThumb, fileFormat } from './utils';
 
@@ -17,7 +20,7 @@ type FileIconProps = {
   onDownload?: VoidFunction;
 };
 
-function FileThumbnail({ file, tooltip, fileView }: FileIconProps) {
+function FileThumbnail({ file, tooltip, fileView, onDownload }: FileIconProps) {
 /* --------------------------------- CONSTS --------------------------------- */
   const { name = '', path = '', preview = '' } = fileData(file) || {};
 
@@ -53,7 +56,7 @@ function FileThumbnail({ file, tooltip, fileView }: FileIconProps) {
           <span className="flex justify-center items-center shrink-0 w-fit h-[inherit]">
             {renderContent}
           </span>
-          {/* {onDownload && <DownloadButton onDownload={onDownload} />} */}
+          {onDownload && <DownloadButton onDownload={onDownload} />}
         </TooltipTrigger>
         <TooltipContent>
           <p>{name}</p>
@@ -66,7 +69,7 @@ function FileThumbnail({ file, tooltip, fileView }: FileIconProps) {
   return (
     <>
       {renderContent}
-      {/* {onDownload && <DownloadButton onDownload={onDownload} />} */}
+      {onDownload && <DownloadButton onDownload={onDownload} />}
     </>
   );
 };

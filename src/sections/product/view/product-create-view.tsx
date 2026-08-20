@@ -1,44 +1,34 @@
 /* -------------------------------------------------------------------------- */
 /*                                DEPENDENCIES                                */
 /* -------------------------------------------------------------------------- */
-// Packages
-import { useParams } from 'react-router-dom';
-
 // UI Local Component
 import ProductNewEditForm from "../product-new-edit-form";
-import { useProducts } from '../context/use-products';
 import { CustomBreadcrumbs } from '@/components/custom-breadcrumbs';
 
 // Types
 import { paths } from '@/routes/paths';
 
 /* -------------------------------------------------------------------------- */
-/*                         PRODUCT EDIT VIEW COMPONENT                        */
+/*                        PRODUCT CREATE VIEW COMPONENT                       */
 /* -------------------------------------------------------------------------- */
-function ProductEditView() {
-/* --------------------------------- CONSTS --------------------------------- */
-  const { productId } = useParams();
-  const { products } = useProducts();
-
-  const currentProduct = products.find((product) => product.id === productId);
-  
+function ProductCreateView() {
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <div className="mx-auto w-full max-w-7xl">
       <CustomBreadcrumbs
-        heading='Edit'
+        heading='Create a new product'
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
           { name: 'Product', href: paths.dashboard.product.list },
-          { name: currentProduct?.title ?? 'Product', href: currentProduct ? paths.dashboard.product.edit(currentProduct.id) : paths.dashboard.product.list }
+          { name: 'create', href: paths.dashboard.product.create }
         ]}
       />
 
       <div className="mt-8">
-        <ProductNewEditForm currentProduct={currentProduct} />
+        <ProductNewEditForm />
       </div>
     </div>
   );
 };
 
-export default ProductEditView;
+export default ProductCreateView;

@@ -8,9 +8,9 @@ import { Route, Routes } from 'react-router-dom';
 import Layout from './layouts/dashboard/layout';
 import { 
   EcommerceView,
+  ProductCreateView,
   ProductEditView, 
   ProductListView, 
-  ProductNewEditForm, 
   ProductRoutesLayout 
 } from './sections';
 
@@ -31,7 +31,7 @@ function App() {
 
           // Managment
           <Route path="/dashboard/product" element={<ProductListView />} />
-          <Route path="/dashboard/product/add" element={<ProductNewEditForm />} />
+          <Route path="/dashboard/product/add" element={<ProductCreateView />} />
           <Route path="/dashboard/product/:productId/edit" element={<ProductEditView />} />
         </Route>
       </Routes>

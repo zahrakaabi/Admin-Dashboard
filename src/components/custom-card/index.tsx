@@ -3,7 +3,6 @@
 /* -------------------------------------------------------------------------- */
 // Packages
 import type React from "react";
-import { useLocation } from 'react-router-dom';
 
 // UI Lib Components
 import { 
@@ -28,13 +27,9 @@ type CustomCardProps = {
 };
 
 function CustomCard({ cardTitle, cardDescription, content }: CustomCardProps) {
-/* --------------------------------- CONSTS --------------------------------- */
-  const location = useLocation();
-  const isEditPage = location.pathname.includes('/edit');
-
 /* -------------------------------- RENDERING ------------------------------- */
   return (
-    <Collapsible defaultOpen={isEditPage} className="w-full">
+    <Collapsible defaultOpen={true} className="w-full">
       <Card>
         <CardHeader className="flex items-center justify-between">
           <div>

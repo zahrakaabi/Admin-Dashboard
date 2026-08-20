@@ -12,7 +12,7 @@ export interface LogoProps extends React.HTMLAttributes<HTMLDivElement> {
   to?: string
 };
 
-function Logo({ disabledLink = false, to = "/", style, className, ...props }: LogoProps) {
+function Logo({ disabledLink = false, to = "/dashboard", style, className, ...props }: LogoProps) {
 /* --------------------------------- CONSTS --------------------------------- */
   const logo = (
     <div className={className}

@@ -7,19 +7,19 @@ import type { FileRejection } from 'react-dropzone';
 /* -------------------------------------------------------------------------- */
 /*                      ERROR REJECTIONS FILES COMPONENT                      */
 /* -------------------------------------------------------------------------- */
-function ErrorRejectionsFiles({ fileRejections }: { fileRejections: FileRejection[] }) {
-  if (fileRejections.length === 0) return null;
+function ErrorRejectionsFiles({ fileRejections }: { fileRejections: readonly FileRejection[] }) {
+  if (!fileRejections.length) return null;
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <div style={{ 
-        marginTop: '12px', 
-        padding: '12px 16px', 
-        borderRadius: '8px', 
-        backgroundColor: 'rgba(255, 86, 48, 0.08)', 
-        border: '1px solid rgba(255, 86, 48, 0.2)', 
-        display: 'flex', 
-        flexDirection: 'column', gap: '6px' 
+      marginTop: '12px', 
+      padding: '12px 16px', 
+      borderRadius: '8px', 
+      backgroundColor: 'rgba(255, 86, 48, 0.08)', 
+      border: '1px solid rgba(255, 86, 48, 0.2)', 
+      display: 'flex', 
+      flexDirection: 'column', gap: '6px' 
     }}>
       {fileRejections.map(({ file, errors }) => (
         <div key={file.name}>

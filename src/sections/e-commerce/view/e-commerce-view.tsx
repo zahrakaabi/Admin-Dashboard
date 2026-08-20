@@ -42,7 +42,7 @@ function EcommerceView() {
         <EcommerceFeatured />
 
         <div className="flex flex-wrap gap-6">
-          {PRODUCT_SUMMARY.map((summary) => <ProductSummaryCard summary={summary} />)}
+          {PRODUCT_SUMMARY.map((summary, index) => <ProductSummaryCard key={index} summary={summary} />)}
         </div>
 
         <SaleByGenderCard />

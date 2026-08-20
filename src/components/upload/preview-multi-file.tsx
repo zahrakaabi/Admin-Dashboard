@@ -4,6 +4,10 @@
 // Packages
 import { motion, AnimatePresence } from 'framer-motion';
 
+// UI Lib Components
+import { X as CloseIcon } from "lucide-react";
+import { Button } from '../ui';
+
 // UI Local Components
 import { fileData, FileThumbnail } from '../file-thumbnails';
 
@@ -14,7 +18,7 @@ import { varFade } from '../animate';
 /* -------------------------------------------------------------------------- */
 /*                        PREVIEW MULTI FILE COMPONENT                        */
 /* -------------------------------------------------------------------------- */
-function MultiFilePreview({ thumbnail, files }: UploadProps) {
+function MultiFilePreview({ thumbnail, files, onRemove }: UploadProps) {
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <AnimatePresence initial={false}>
@@ -36,6 +40,18 @@ function MultiFilePreview({ thumbnail, files }: UploadProps) {
                 fileView
                 file={file}
               />
+
+              {onRemove && (
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => onRemove(file)}
+                  className="cusrsor-pointer absolute top-1 right-1 h-6 w-6 rounded-full bg-neutral-900/50 p-1 text-white hover:bg-neutral-900/70 hover:text-white"
+                >
+                  <CloseIcon className="h-3.5 w-3.5" />
+                  <span className="sr-only">Remove</span>
+                </Button>
+              )}
             </motion.div>
           )
         }

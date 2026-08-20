@@ -15,9 +15,10 @@ type TextFieldProps = {
   label?: string;
   name: string;
   placeholder: string;
+  autoFocus?: boolean
 };
 
-function RHFTextField({type, label, name, placeholder}: TextFieldProps) {
+function RHFTextField({type, label, name, placeholder, autoFocus}: TextFieldProps) {
 /* ---------------------------------- HOOKS --------------------------------- */
   const { control } = useFormContext();
 
@@ -33,6 +34,7 @@ function RHFTextField({type, label, name, placeholder}: TextFieldProps) {
             id={name}
             type={type}  
             placeholder={placeholder} 
+            autoFocus={autoFocus}
             value={type === 'number' && field.value === 0 ? '' : field.value}
             onChange={(event) => {
               if (type === 'number') {

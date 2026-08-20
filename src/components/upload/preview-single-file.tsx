@@ -21,7 +21,7 @@ function SingleFilePreview({ imgUrl = '' }: Props) {
         className="w-full h-full rounded"
       />
     </div>
-  )
+  );                           
 };
 
 export default SingleFilePreview;

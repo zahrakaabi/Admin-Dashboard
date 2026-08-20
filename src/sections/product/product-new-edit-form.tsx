@@ -175,15 +175,13 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
         maxStock: 200,
       };
 
-      // if (currentProduct) {
-      //   updateProduct(productPayload);
-      //   enqueueSnackbar('Update with success!');
-      // } else {
-      //   addProduct(productPayload);
-      //   enqueueSnackbar('Created with success!');
-      // }
       addProduct(productPayload);
-      enqueueSnackbar('Update with success!');
+      
+      if (currentProduct) {
+        enqueueSnackbar('Update with success!');
+      } else {
+        enqueueSnackbar('Created with success!');
+      }
 
       reset();
       navigate(paths.dashboard.product.list);
@@ -194,6 +192,18 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
       loadingSend.onFalse();
     };
   });
+
+  const handleRemoveFile = useCallback(
+    (inputFile: File | string) => {
+      const filtered = values.images?.filter((file: string | File | undefined) => file !== inputFile);
+      setValue('images', filtered);
+    },
+    [setValue, values.images]
+  );
+
+  const handleRemoveAllFiles = useCallback(() => {
+    setValue('images', []);
+  }, [setValue]);
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
@@ -211,6 +221,7 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
                   label="Name"
                   name="title"
                   placeholder="Product title"
+                  autoFocus
                 />
                 <RHFTextArea
                   label="Description"
@@ -223,9 +234,9 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
                   thumbnail
                   // maxSize={3145728}
                   onDrop={handleDrop}
-                  // onRemove={handleRemoveFile}
-                  // onRemoveAll={handleRemoveAllFiles}
-                  // onUpload={() => console.info('ON UPLOAD')}
+                  onRemove={handleRemoveFile}
+                  onRemoveAll={handleRemoveAllFiles}
+                  onUpload={() => console.info('ON UPLOAD')}
                 />
               </>
             }

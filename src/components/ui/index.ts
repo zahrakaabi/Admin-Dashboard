@@ -22,3 +22,4 @@ export * from './badge';
 export * from './pagination';
 export * from './field';
 export * from './dialog';
+export * from './breadcrumb';
