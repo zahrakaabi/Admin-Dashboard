@@ -27,7 +27,7 @@ type Props = {
   count: number;
   page: number;
   rowsPerPage: number;
-  onPageChange: (event: unknown, newPage: number) => void;
+  onPageChange: (newPage: number) => void;
   onRowsPerPageChange: (event: ChangeEvent<HTMLInputElement>) => void;
   dense?: boolean;
   onChangeDense?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -54,13 +54,13 @@ function TablePaginationCustom({
 
   const handlePrevious = () => {
     if (canGoPrevious) {
-      onPageChange(null, page - 1);
+      onPageChange(page - 1);
     }
   };
 
   const handleNext = () => {
     if (canGoNext) {
-      onPageChange(null, page + 1);
+      onPageChange(page + 1);
     }
   };
 
