@@ -3,7 +3,7 @@
 /* -------------------------------------------------------------------------- */
 // UI Lib Components
 import { Button, DropdownMenu, DropdownMenuItem, DropdownMenuTrigger,TableCell, TableRow } from "@/components/ui";
-import { EllipsisVertical, Eye, Pencil, Trash2 } from 'lucide-react';
+import { EllipsisVertical, Pencil, Trash2 } from 'lucide-react';
 
 // UI Local Components
 import { CustomPopover } from "@/components/custom-popover";
@@ -146,10 +146,6 @@ function ProductTableRow({
             </DropdownMenuTrigger>
 
             <CustomPopover align="end">
-              <DropdownMenuItem className="cursor-pointer">
-                <Eye />
-                <span>View</span>
-              </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" onClick={onEditRow}>
                 <Pencil />
                 <span>Edit</span>

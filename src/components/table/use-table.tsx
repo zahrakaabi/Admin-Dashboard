@@ -74,7 +74,7 @@ function useTable(props?: UseTableProps): ReturnType {
     setSelected([]);
   }, []);
 
-  const onChangePage = useCallback((event: unknown, newPage: number) => {
+  const onChangePage = useCallback((newPage: number) => {
     setPage(newPage);
   }, []);
 

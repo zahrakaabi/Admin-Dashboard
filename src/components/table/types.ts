@@ -14,7 +14,7 @@ export type TableProps = {
   //
   onResetPage: VoidFunction;
   onSort: (id: number) => void;
-  onChangePage: (event: unknown, newPage: number) => void;
+  onChangePage: (newPage: number) => void;
   onChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeDense: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onUpdatePageDeleteRow: (totalRowsInPage: number) => void;
