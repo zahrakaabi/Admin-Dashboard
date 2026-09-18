@@ -14,11 +14,13 @@ type ReturnType = TableProps;
 
 export type UseTableProps = {
   defaultDense?: boolean;
-  defaultOrder?: 'asc' | 'desc';
-  defaultOrderBy?: number;
+
   defaultSelected?: number[];
   defaultRowsPerPage?: number;
   defaultCurrentPage?: number;
+
+  defaultOrder?: 'asc' | 'desc';
+  defaultOrderBy?: number;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -27,12 +29,13 @@ export type UseTableProps = {
 function useTable(props?: UseTableProps): ReturnType {
 /* ---------------------------------- HOOKS --------------------------------- */
   const [dense, setDense] = useState(!!props?.defaultDense);
+
   const [page, setPage] = useState(props?.defaultCurrentPage ?? 0);
-  //const [orderBy, setOrderBy] = useState(props?.defaultOrderBy || 'name');
-  const [orderBy, setOrderBy] = useState<number>(props?.defaultOrderBy ?? 0);
   const [rowsPerPage, setRowsPerPage] = useState(props?.defaultRowsPerPage ?? 5);
-  const [order, setOrder] = useState<'asc' | 'desc'>(props?.defaultOrder || 'asc');
   const [selected, setSelected] = useState<number[]>(props?.defaultSelected || []);
+
+  const [orderBy, setOrderBy] = useState<number>(props?.defaultOrderBy || 0);
+  const [order, setOrder] = useState<'asc' | 'desc'>(props?.defaultOrder || 'asc');
 
 /* ---------------------------- USEFULL FUNCTIONS --------------------------- */
   const onSort = useCallback(
@@ -124,10 +127,12 @@ function useTable(props?: UseTableProps): ReturnType {
 /* -------------------------------- RENDERING ------------------------------- */
   return {
     dense,
-    order,
+
     page,
-    orderBy,
     rowsPerPage,
+
+    order,
+    orderBy,
     //
     selected,
     onSelectRow,

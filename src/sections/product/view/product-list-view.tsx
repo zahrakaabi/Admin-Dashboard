@@ -8,7 +8,7 @@ import isEqual from 'lodash/isEqual';
 import { useSnackbar } from "notistack";
 
 // UI Lib Components
-import { Plus } from "lucide-react";
+import { ArrowDown, ArrowUp, Plus } from "lucide-react";
 import { Button, Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui";
 
 // UI Local Components
@@ -17,7 +17,9 @@ import ProductTableFiltersResult from "../product-table-filters-result";
 import ProductTableRow from "../product-table-row";
 import ProductTableToolbar from "../product-table-toolbar";
 import { 
+  applySort,
   emptyRows, 
+  getComparator, 
   TableEmptyRows, 
   TableNoData, 
   TablePaginationCustom, 
@@ -48,7 +50,8 @@ function ProductListView() {
 /* ----------------------------- HANDLE FILTERS ----------------------------- */
   const dataFiltered = applyFilter({
     inputData: products,
-    filters
+    filters,
+    comparator: getComparator(table.order, table.orderBy)
   });
 
   const handleFilters = useCallback(
@@ -71,11 +74,11 @@ function ProductListView() {
 
 /* --------------------------------- CONSTS --------------------------------- */
   const TABLE_HEAD = [
-    { label: 'Product', minWidth: 200 },
-    { label: 'Create at', minWidth: 200 },
-    { label: 'Stock', minWidth: 200 },
-    { label: 'Price', width: 200 },
-    { label: ''} //action
+    { id: 0, label: 'Product', minWidth: 200 },
+    { id: 1, label: 'Create at', minWidth: 200 },
+    { id: 2, label: 'Stock', minWidth: 200 },
+    { id: 3, label: 'Price', width: 200 },
+    { id: 4, label: '' } //action
   ];
 
 /* ------------------------------- HANDLE ROW ------------------------------- */
@@ -133,11 +136,29 @@ function ProductListView() {
         <Table className="mt-4">
           <TableHeader>
             <TableRow className="bg-gray-50 dark:bg-gray-700">
-              {TABLE_HEAD.map((head) => <TableHead key={head.label} className="text-[#637381] font-semibold">
-                {head.label}
-              </TableHead>)}
+              {TABLE_HEAD.map((head) => (
+                <TableHead
+                  key={head.id || head.label}
+                  className="text-[#637381] font-semibold"
+                  style={{ minWidth: head.minWidth, width: head.width }}
+                >
+                  {head.label ? (
+                    <button onClick={() => table.onSort(head.id)} className="flex items-center gap-1 cursor-pointer">
+                      {head.label}
+                      {table.orderBy === head.id && (
+                        table.order === 'asc'
+                          ? <ArrowUp className="h-3 w-3" />
+                          : <ArrowDown className="h-3 w-3" />
+                      )}
+                    </button>
+                  ) : (
+                    head.label
+                  )}
+                </TableHead>
+              ))}
             </TableRow>
           </TableHeader>
+
           <TableBody>
             {dataFiltered?.slice(
                 table.page * table.rowsPerPage,
@@ -181,13 +202,17 @@ export default ProductListView;
 /* -------------------------------------------------------------------------- */
 function applyFilter({
   inputData,
-  filters
+  filters,
+  comparator
 }: {
   inputData: PRODUCT[];
   filters: IProductTableFilters;
+  comparator: (a: PRODUCT, b: PRODUCT) => number;
 }) {
 /* -------------------------------- CONSTANTS ------------------------------- */
   const { search, stockStatus } = filters;
+
+  inputData = applySort(inputData, comparator);
 
   if (search) {
     inputData = inputData?.filter(
