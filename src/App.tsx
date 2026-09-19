@@ -8,10 +8,17 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './layouts/dashboard/layout';
 import { 
   EcommerceView,
+  AnalyticsView,
+
+  // product
   ProductCreateView,
   ProductEditView, 
   ProductListView, 
-  ProductRoutesLayout 
+  ProductRoutesLayout, 
+
+  // user
+  UserRoutesLayout,
+  UserListView
 } from './sections';
 
 // Styles
@@ -24,16 +31,24 @@ function App() {
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={<EcommerceView />} />
-        
+      <Route path="/dashboard" element={<Layout />}>
+        <Route index element={<Navigate to="e-commerce" replace />} />
+        <Route path="e-commerce" element={<EcommerceView />} />
+        <Route path="analytics" element={<AnalyticsView />} />
+
         <Route element={<ProductRoutesLayout />}>
-          <Route path="/dashboard/product" element={<ProductListView />} />
-          <Route path="/dashboard/product/add" element={<ProductCreateView />} />
-          <Route path="/dashboard/product/:productId/edit" element={<ProductEditView />} />
+          <Route path="product" element={<ProductListView />} />
+          <Route path="product/add" element={<ProductCreateView />} />
+          <Route path="product/:productId/edit" element={<ProductEditView />} />
+        </Route>
+
+        <Route element={<UserRoutesLayout />}>
+          <Route path="user" element={<UserListView />} />
         </Route>
       </Route>
+
+      {/* bare "/" redirect to the dashboard */}
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 };

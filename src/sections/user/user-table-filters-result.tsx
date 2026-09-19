@@ -1,0 +1,130 @@
+/* -------------------------------------------------------------------------- */
+/*                                DEPENDENCIES                                */
+/* -------------------------------------------------------------------------- */
+// Packages
+import { useCallback } from "react";
+import type React from "react";
+
+// UI Lib Components
+import { Badge, Button } from "@/components/ui";
+import { Trash2, X } from "lucide-react";
+
+// Packages
+import type { IUserTableFilters, IUserTableFilterValue } from "@/types";
+
+/* -------------------------------------------------------------------------- */
+/*                     USER TABLE FILTERS RESULT COMPONENT                    */
+/* -------------------------------------------------------------------------- */
+type Props = {
+  filters: IUserTableFilters;
+  onFilters: (search: string, value: IUserTableFilterValue) => void;
+  onResetFilters: VoidFunction;
+  results: number;
+};
+
+function UserTableFiltersResult({
+  filters,
+  onFilters,
+  onResetFilters,
+  results,
+  ...other
+}: Props) {
+/* --------------------------------- CONSTS --------------------------------- */
+  const handleRemoveRole = useCallback(
+    (userRole: string) => {
+      const newValue = filters.role.filter((role) => role !== userRole);
+      onFilters('role', newValue);
+    },
+    [filters.role, onFilters]
+  );
+
+  const handleRemoveKeyword = useCallback(() => {
+    onFilters('search', '');
+  }, [onFilters]);
+
+/* -------------------------------- RENDERING ------------------------------- */
+  return (
+    <div className='flex flex-col gap-1.5 px-4 md:px-6' {...other}>
+      <div className="text-sm">
+        <strong className="font-semibold">{results}</strong>
+        <span className="ml-1 text-muted-foreground">
+          Found results
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-row flex-wrap items-center gap-2">
+        {filters.role.length && (
+          <Block label="Role:">
+            {filters.role.map((role, index) => (
+              <Badge key={index} variant="secondary" className="gap-1 pr-1.5 font-normal capitalize">
+                {role}
+                <button
+                    type="button"
+                    onClick={() => handleRemoveRole(role)}
+                    className="rounded-full p-0.5 hover:bg-muted-foreground/20 focus:outline-none cursor-pointer"
+                >
+                  <X className="h-3 w-3" />
+                  <span className="sr-only">Remove role</span>
+                </button>
+              </Badge>
+            ))}
+          </Block>
+        )}
+
+        {!!filters.search && (
+          <Block label="keyword:">
+            <Badge variant="secondary" className="gap-1 pr-1.5 font-normal capitalize">
+              {filters.search}
+              <button
+                type="button"
+                onClick={handleRemoveKeyword}
+                className="rounded-full p-0.5 hover:bg-muted-foreground/20 focus:outline-none cursor-pointer"
+              >
+                <X className="h-3 w-3" />
+                <span className="sr-only">Remove keyword</span>
+              </button>
+            </Badge>
+          </Block>
+        )}
+
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={onResetFilters}
+          className="bg-transparent text-red-500 gap-2"
+        >
+          <Trash2 className="h-4 w-4" />
+          Effacer
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default UserTableFiltersResult;
+
+/* -------------------------------------------------------------------------- */
+/*                                    BLOCK                                   */
+/* -------------------------------------------------------------------------- */
+interface BlockProps extends React.HTMLAttributes<HTMLDivElement> {
+  label: string;
+  children: React.ReactNode;
+}
+
+function Block({ label, children, className = '', ...other }: BlockProps) {
+/* -------------------------------- RENDERING ------------------------------- */
+  return (
+    <div
+      className={`inline-flex items-center gap-2 rounded-lg border border-dashed border-border p-2 overflow-hidden ${className}`}
+      {...other}
+    >
+      <span className="text-sm font-semibold leading-none text-foreground">
+        {label}
+      </span>
+
+      <div className="flex flex-row flex-wrap items-center gap-2">
+        {children}
+      </div>
+    </div>
+  );
+};

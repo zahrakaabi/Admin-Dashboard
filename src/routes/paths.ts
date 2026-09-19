@@ -17,12 +17,13 @@ export const paths = {
   dashboard: {
     // OVERVIEW
     root: `${ROOTS.DASHBOARD}`,
+    eCommerce: `${ROOTS.DASHBOARD}/e-commerce`,
     analytics: `${ROOTS.DASHBOARD}/analytics`,
     // MANAGMENT
     user: {
-      list: `${ROOTS.DASHBOARD}/users`,
-      create: `${ROOTS.DASHBOARD}/users/add`,
-      edit: (id: string) => `${ROOTS.DASHBOARD}/users/${id}/edit`
+      list: `${ROOTS.DASHBOARD}/user`,
+      create: `${ROOTS.DASHBOARD}/user/add`,
+      edit: (id: string) => `${ROOTS.DASHBOARD}/user/${id}/edit`
     },
     product: {
       list: `${ROOTS.DASHBOARD}/product`,

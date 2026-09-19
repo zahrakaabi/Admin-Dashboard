@@ -36,7 +36,7 @@ type Props = {
 function TablePaginationCustom({
   count,
   page,
-  rowsPerPage = 5,
+  rowsPerPage,
   onPageChange,
   onRowsPerPageChange,
   dense,

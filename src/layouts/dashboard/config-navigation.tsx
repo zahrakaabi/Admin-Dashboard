@@ -16,7 +16,7 @@ export function useNavData() {
       {
         subheader: 'Overview',
         items: [
-          { title: 'E-commerce', path: paths.dashboard.root },
+          { title: 'E-commerce', path: paths.dashboard.eCommerce },
           { title: 'Analytics', path: paths.dashboard.analytics },
         ],
       },
@@ -38,7 +38,6 @@ export function useNavData() {
             children: [
               { title: 'List', path: paths.dashboard.product.list },
               { title: 'Create', path: paths.dashboard.product.create },
-              // { title: 'Details', path: paths.dashboard.product.details },
               { title: 'Edit', path: paths.dashboard.product.edit('classic-leather-loafers') }
             ]
           },
