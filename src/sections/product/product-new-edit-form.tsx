@@ -45,7 +45,7 @@ type ProductNewEditFormProps = {
 function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
 /* ------------------------------ CUSTOM HOOKS ------------------------------ */
   const loadingSend = useBoolean(false);
-  const { addProduct } = useProducts();
+  const { addProduct, updateProduct } = useProducts();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
@@ -159,6 +159,8 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
         return 'in stock';
       };
 
+      const sanitizedImages = data.images.filter((img): img is string | File => img !== undefined);
+
       const productPayload = {
         ...data,
         id: currentProduct ? currentProduct.id : `prod-${Date.now()}`,
@@ -171,16 +173,16 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
         status: currentProduct ? currentProduct.status : 'new',
         inventoryType: getInventoryStatus(data.stock),
         creationAt: currentProduct ? currentProduct.creationAt : new Date(),
-        images: data.images.filter((img) => img !== undefined) as (string | File)[],
+        images: sanitizedImages,
         maxStock: 200,
       };
 
-      addProduct(productPayload);
-      
       if (currentProduct) {
-        enqueueSnackbar('Update with success!');
+        updateProduct({ ...currentProduct, ...productPayload, images: sanitizedImages });
+        enqueueSnackbar('Product updated successfully');
       } else {
-        enqueueSnackbar('Created with success!');
+        addProduct(productPayload);
+        enqueueSnackbar('Product created successfully');
       }
 
       reset();
@@ -207,7 +209,7 @@ function ProductNewEditForm({ currentProduct }: ProductNewEditFormProps) {
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
-    <div className="mx-auto max-w-xl ">
+    <div className="mx-auto max-w-xl">
       <FormProvider methods={methods} onSubmit={handleEditAndSend}>
         <div className="flex flex-col items-end gap-6">
           {/* ----------------------- PRODUCT INFOS ---------------------------- */}

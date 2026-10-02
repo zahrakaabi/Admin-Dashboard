@@ -14,6 +14,7 @@ import { _products } from "@/_mock";
 type ProductContextType = {
   products: PRODUCT[];
   addProduct: (newProduct: PRODUCT) => void;
+  updateProduct: (updatedProduct: PRODUCT) => void;
   deleteProduct: (productId: string) => void;
 };
 
@@ -26,6 +27,12 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     setProducts((prev) => [newProduct, ...prev]);
   }, []);
 
+  const updateProduct = useCallback((updatedProduct: PRODUCT) => {
+    setProducts((prev) =>
+      prev.map((product) => (product.id === updatedProduct.id ? updatedProduct : product))
+    );
+  }, []);
+
   const deleteProduct = useCallback((rowId: string) => {
     setProducts((prev) => prev.filter((row: { id: string }) => row.id !== rowId));
   }, []);
@@ -33,8 +40,9 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
   const memoizedValue = useMemo(() => ({ 
     products, 
     addProduct,
+    updateProduct,
     deleteProduct 
-  }), [products, addProduct, deleteProduct]);
+  }), [products, addProduct, updateProduct, deleteProduct]);
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (
@@ -42,4 +50,4 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
       {children}
     </ProductContext.Provider>
   );
-}
+};

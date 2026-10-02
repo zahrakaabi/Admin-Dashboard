@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Controller, useFormContext } from "react-hook-form";
 
 // UI Local Components
-import { Upload, UploadBox } from "../upload";
+import { Upload, UploadAvatar, UploadBox } from "../upload";
 
 // Utils
 import type { UploadProps } from "../upload/types";
@@ -43,7 +43,30 @@ function FormHelperText({ error, helperText }: FormHelperTextProps) {
       {error || helperText}
     </p>
   );
-}
+};
+
+/* -------------------------------------------------------------------------- */
+/*                         RHF UPLOAD AVATAR COMPONENT                        */
+/* -------------------------------------------------------------------------- */
+export function RHFUploadAvatar({ name, ...other }: Props) {
+/* -------------------------------- CONSTANTS ------------------------------- */
+  const { control } = useFormContext();
+
+/* -------------------------------- RENDERING ------------------------------- */
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <div>
+          <UploadAvatar error={!!error} file={field.value} {...other} />
+
+          {!!error && <FormHelperText error={error?.message} helperText={error.message} />}
+        </div>
+      )}
+    />
+  );
+};
 
 /* -------------------------------------------------------------------------- */
 /*                          RHF UMPLAOD BOX COMPONENT                         */

@@ -1,34 +1,44 @@
 /* -------------------------------------------------------------------------- */
 /*                                DEPENDENCIES                                */
 /* -------------------------------------------------------------------------- */
+// Packages
+import { useParams } from 'react-router-dom';
+
 // UI Local Component
-import UserNewEditForm from "../user-new-edit-form";
+import { useUser } from '../context/use-user';
 import { CustomBreadcrumbs } from '@/components/custom-breadcrumbs';
+import UserNewEditForm from '../user-new-edit-form';
 
 // Types
 import { paths } from '@/routes/paths';
 
 /* -------------------------------------------------------------------------- */
-/*                          USER CREATE VIEW COMPONENT                        */
+/*                           USER EDIT VIEW COMPONENT                         */
 /* -------------------------------------------------------------------------- */
-function UserCreateView() {
+function UserEditView() {
+/* --------------------------------- CONSTS --------------------------------- */
+  const { userId } = useParams();
+  const { users } = useUser();
+
+  const currentUser = users.find((user) => user.id === userId);
+  
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <div className="mx-auto w-full max-w-7xl">
       <CustomBreadcrumbs
-        heading='Create a new user'
+        heading='Edit'
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
           { name: 'User', href: paths.dashboard.user.list },
-          { name: 'create', href: paths.dashboard.user.create }
+          { name: currentUser?.fullName ?? 'User', href: currentUser ? paths.dashboard.user.edit(currentUser.id) : paths.dashboard.user.list }
         ]}
       />
 
       <div className="mt-8">
-        <UserNewEditForm />
+        <UserNewEditForm currentUser={currentUser} />
       </div>
     </div>
   );
 };
 
-export default UserCreateView;
+export default UserEditView;

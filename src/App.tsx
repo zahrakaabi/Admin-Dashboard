@@ -18,7 +18,9 @@ import {
 
   // user
   UserRoutesLayout,
-  UserListView
+  UserListView,
+  UserCreateView,
+  UserEditView
 } from './sections';
 
 // Styles
@@ -31,19 +33,21 @@ function App() {
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <Routes>
-      <Route path="/dashboard" element={<Layout />}>
-        <Route index element={<Navigate to="e-commerce" replace />} />
-        <Route path="e-commerce" element={<EcommerceView />} />
-        <Route path="analytics" element={<AnalyticsView />} />
-
-        <Route element={<ProductRoutesLayout />}>
-          <Route path="product" element={<ProductListView />} />
-          <Route path="product/add" element={<ProductCreateView />} />
-          <Route path="product/:productId/edit" element={<ProductEditView />} />
-        </Route>
-
+      <Route element={<ProductRoutesLayout />}>
         <Route element={<UserRoutesLayout />}>
-          <Route path="user" element={<UserListView />} />
+          <Route path="/dashboard" element={<Layout />}>
+            <Route index element={<Navigate to="e-commerce" replace />} />
+            <Route path="e-commerce" element={<EcommerceView />} />
+            <Route path="analytics" element={<AnalyticsView />} />
+
+            <Route path="product" element={<ProductListView />} />
+            <Route path="product/add" element={<ProductCreateView />} />
+            <Route path="product/:productId/edit" element={<ProductEditView />} />
+
+            <Route path="user" element={<UserListView />} />
+            <Route path="user/add" element={<UserCreateView />} />
+            <Route path="user/:userId/edit" element={<UserEditView />} />
+          </Route>
         </Route>
       </Route>
 

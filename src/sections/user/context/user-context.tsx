@@ -14,6 +14,7 @@ import { _users } from "@/_mock";
 type UserContextType = {
   users: USER[];
   addUser: (newUser: USER) => void;
+  updateUser: (updatedUser: USER) => void;
   deleteUser: (userId: string) => void;
 };
 
@@ -21,9 +22,15 @@ export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [users, setUsers] = useState<USER[]>(_users);
-
+  
   const addUser = useCallback((newUser: USER) => {
     setUsers((prev) => [newUser, ...prev]);
+  }, []);
+
+  const updateUser = useCallback((updatedUser: USER) => {
+    setUsers((prev) =>
+      prev.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+    );
   }, []);
 
   const deleteUser = useCallback((userId: string) => {
@@ -33,8 +40,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const memoizedValue = useMemo(() => ({ 
     users, 
     addUser,
+    updateUser,
     deleteUser 
-  }), [users, addUser, deleteUser]);
+  }), [users, addUser, updateUser, deleteUser]);
 
 /* -------------------------------- RENDERING ------------------------------- */
   return (

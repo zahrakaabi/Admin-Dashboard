@@ -217,7 +217,7 @@ function applyFilter({
 
   if (search) {
     inputData = inputData?.filter(
-      (user) => user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+      (user) => user.fullName.toLowerCase().indexOf(search.toLowerCase()) !== -1
     );
   };
 

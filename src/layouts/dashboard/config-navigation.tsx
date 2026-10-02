@@ -28,8 +28,8 @@ export function useNavData() {
             path: paths.dashboard.user.list,
             children: [
               { title: 'List', path: paths.dashboard.user.list },
-              // { title: 'Details', path: paths.dashboard.user.details },
-              { title: 'Create', path: paths.dashboard.user.create }
+              { title: 'Create', path: paths.dashboard.user.create },
+              { title: 'Edit', path: paths.dashboard.user.edit('01') }
             ]
           },
           { 
@@ -46,7 +46,6 @@ export function useNavData() {
             path: paths.dashboard.blog.list,
             children: [
               { title: 'List', path: paths.dashboard.blog.list },
-              // { title: 'Details', path: paths.dashboard.blog.details },
               { title: 'Create', path: paths.dashboard.blog.create },
               { title: 'Edit', path: paths.dashboard.blog.edit('1') }
             ]

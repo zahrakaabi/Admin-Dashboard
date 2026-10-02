@@ -32,8 +32,8 @@ function UserTableRow({
 
 /* --------------------------------- CONSTS --------------------------------- */
   const {
-    images,
-    name, 
+    photoURL,
+    fullName, 
     email,
     phoneNumber,
     company,
@@ -41,20 +41,18 @@ function UserTableRow({
     status
   } = row;
 
-  const renderProductPreview = (images: string[], name: string) => {
-    if (!Array.isArray(images) || images.length === 0) {
+  const renderProductPreview = (photoURL: string, fullName: string) => {
+    if (!photoURL) {
       return <div className="w-[4rem] h-[4rem] rounded-xl bg-gray-300" />;
-    }
-
-    const firstItem = images[0];
-
-    return (
+    } else {
+      return (
         <img 
-            className="w-[4rem] h-[4rem] rounded-xl object-cover" 
-            src={firstItem} 
-            alt={name} 
+          className="w-[4rem] h-[4rem] rounded-xl object-cover" 
+          src={photoURL} 
+          alt={fullName} 
         />
-    );
+      );
+    };
   };
 
   const statusStyles: Record<UserStatus, string> = {
@@ -69,11 +67,11 @@ function UserTableRow({
       <TableRow>
         <TableCell className="max-w-xs p-4">
           <div className="flex items-center gap-3">
-            {renderProductPreview(images, name)}
+            {renderProductPreview(photoURL, fullName)}
             <div className="flex flex-col gap-1">
               <h1 className="text-sm font-semibold whitespace-nowrap text-ellipsis overflow-hidden 
               cursor-pointer hover:text-blue-500 hover:underline transition-all duration-200">
-                <a>{name ? name : 'Name'}</a>
+                <a>{fullName ? fullName : 'Full name'}</a>
               </h1>
               <h2 className="text-sm font-normal text-[#919EAB] cursor-text">
                 {email}

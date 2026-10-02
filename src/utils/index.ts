@@ -3,3 +3,4 @@ export * from './helpers';
 export * from './format-time';
 export * from './chart-helpers';
 export * from './export';
+export * from './format-numbers';

@@ -2,10 +2,15 @@ export type UserStatus = "Active" | "Pending" | "Banned";
 
 export type USER = {
   id: string;
-  images: string[];
-  name: string;
-  email: string;
+  photoURL: string;
+  fullName: string;
   phoneNumber: string;
+  email: string;
+
+  city: string;
+  adress?: string;
+  zip: number;
+
   role: string;
   company: string;
   status: UserStatus

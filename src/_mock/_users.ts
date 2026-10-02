@@ -10,32 +10,38 @@ import type { USER } from "@/types";
 export const _users: USER[] = [
   {
     id: '01',
-    images: ['https://images.pexels.com/photos/19651857/pexels-photo-19651857.jpeg'],
-    name: 'Zahra Kaabi',
+    photoURL: 'https://images.pexels.com/photos/19651857/pexels-photo-19651857.jpeg',
+    fullName: 'Zahra Kaabi',
     email: 'kaabizahra@gmail.com',
     phoneNumber: '+216 22 222 222',
     role: 'CEO',
     company: 'Wuckert Inc',
-    status: 'Active'
+    status: 'Active',
+    city: '',
+    zip: 0
   },
   {
     id: '02',
-    images: ['https://images.pexels.com/photos/6974969/pexels-photo-6974969.jpeg'],
-    name: 'John Doe',
+    photoURL: 'https://images.pexels.com/photos/6974969/pexels-photo-6974969.jpeg',
+    fullName: 'John Doe',
     email: 'johndoe@gmail.com',
     phoneNumber: '+1 123 456 7890',
     role: 'CTO',
     company: 'Doe Technologies',
-    status: 'Banned'
+    status: 'Banned',
+    city: '',
+    zip: 0
   },
   {
     id: '03',
-    images: ['https://images.pexels.com/photos/6625954/pexels-photo-6625954.jpeg'],
-    name: 'Jane Smith',
+    photoURL: 'https://images.pexels.com/photos/6625954/pexels-photo-6625954.jpeg',
+    fullName: 'Jane Smith',
     email: 'janesmith@gmail.com',
     phoneNumber: '+44 20 1234 5678',
     role: 'Software Engineer',
     company: 'Smith Solutions',
-    status: 'Pending'
+    status: 'Pending',
+    city: '',
+    zip: 0
   }
 ];
