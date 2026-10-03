@@ -31,7 +31,7 @@ import { exportToCsv, printPage } from "@/utils";
 /* -------------------------------------------------------------------------- */
 type Props = {
     filters: IUserTableFilters;
-    onFilters: (name: string, value: IUserTableFilterValue) => void;
+    onFilters: (fullName: string, value: IUserTableFilterValue) => void;
     data: USER[]
 };
 
@@ -117,7 +117,7 @@ function UserTableToolbar({ filters, onFilters, data }: Props) {
                 exportToCsv({
                   data,
                   columns: [
-                    { key: "name", label: "User" },
+                    { key: "fullName", label: "User" },
                     { key: "email", label: "Email" },
                     { key: "phoneNumber", label: "Phone number" },
                     { key: "company", label: "Company" },
