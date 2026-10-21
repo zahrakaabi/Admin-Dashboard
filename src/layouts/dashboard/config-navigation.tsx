@@ -49,6 +49,10 @@ export function useNavData() {
               { title: 'Create', path: paths.dashboard.blog.create },
               { title: 'Edit', path: paths.dashboard.blog.edit('1') }
             ]
+          },
+          {
+            title: 'Calendar',
+            path: paths.dashboard.calendar
           }
         ],
       }

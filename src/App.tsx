@@ -20,7 +20,9 @@ import {
   UserRoutesLayout,
   UserListView,
   UserCreateView,
-  UserEditView
+  UserEditView,
+
+  CalendarView
 } from './sections';
 
 // Styles
@@ -41,13 +43,17 @@ function App() {
             <Route path="e-commerce" element={<EcommerceView />} />
             <Route path="analytics" element={<AnalyticsView />} />
 
+            {/* PRODUCT */}
             <Route path="product" element={<ProductListView />} />
             <Route path="product/add" element={<ProductCreateView />} />
             <Route path="product/:productId/edit" element={<ProductEditView />} />
 
+            {/* USER */}
             <Route path="user" element={<UserListView />} />
             <Route path="user/add" element={<UserCreateView />} />
             <Route path="user/:userId/edit" element={<UserEditView />} />
+
+            <Route path="calendar" element={<CalendarView />} />
           
           </Route>
         </Route>

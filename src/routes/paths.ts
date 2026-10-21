@@ -34,6 +34,7 @@ export const paths = {
       list: `${ROOTS.DASHBOARD}/blog`,
       create: `${ROOTS.DASHBOARD}/blog/add`,
       edit: (id: string) => `${ROOTS.DASHBOARD}/blog/${id}/edit`
-    }
+    },
+    calendar: `${ROOTS.DASHBOARD}/calendar`
   }
 };
