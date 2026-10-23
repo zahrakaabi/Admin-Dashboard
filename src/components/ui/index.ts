@@ -10,6 +10,7 @@ export * from './checkbox';
 export * from './button';
 export * from './popover';
 export * from './table';
+export * from './toggle-group';
 export * from './tooltip';
 export * from './popover';
 export * from './dropdown-menu';
