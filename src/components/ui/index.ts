@@ -18,6 +18,7 @@ export * from './scroll-area';
 export * from './sidebar';
 export * from './sheet';
 export * from './skeleton';
+export * from './switch';
 export * from './carousel';
 export * from './badge';
 export * from './pagination';

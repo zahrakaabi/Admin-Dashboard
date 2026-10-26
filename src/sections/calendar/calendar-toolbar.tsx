@@ -29,7 +29,7 @@ function CalendarToolbar({ controller }: CalendarToolbarProps) {
         <ToggleGroup
             className="flex items-center gap-1 border border-back-200 rounded-sm p-1"
             type="single"
-            value={controller.view?.type}
+            value={controller.view?.type ?? "dayGridMonth"}
             onValueChange={(v) => v && controller.changeView(v)}
         >
             {VIEWS.map(({ value, label, icon: Icon }) => (
@@ -38,9 +38,9 @@ function CalendarToolbar({ controller }: CalendarToolbarProps) {
                         <ToggleGroupItem
                             value={value}
                             aria-label={label}
-                            className="!h-6 !min-w-6 !p-1 !rounded-sm cursor-pointer"
+                            className="group !h-6 !min-w-6 !p-1 !rounded-sm cursor-pointer aria-checked:bg-accent"
                         >
-                            <Icon className="size-4" />
+                            <Icon className="size-4 text-muted-foreground group-aria-checked:text-foreground" />
                         </ToggleGroupItem>
                     </TooltipTrigger>
                     <TooltipContent side="bottom">

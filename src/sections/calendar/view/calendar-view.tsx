@@ -2,7 +2,7 @@
 /*                                DEPENDENCIES                                */
 /* -------------------------------------------------------------------------- */
 // Packages
-import type { ComponentProps } from "react";
+import { useState, type ComponentProps } from "react";
 import FullCalendar, { useCalendarController } from "@fullcalendar/react"
 import themePlugin from "@fullcalendar/react/themes/monarch";
 import dayGridPlugin from "@fullcalendar/react/daygrid";
@@ -11,6 +11,11 @@ import interactionPlugin from "@fullcalendar/react/interaction";
 
 // UI Local Components
 import CalendarToolbar from "../calendar-toolbar";
+import EventNewEditForm from "../event-new-edit-form";
+
+// Utils
+import { EVENTS } from "@/_mock";
+import type { EVENT } from "@/types";
 
 // Styles
 import '@fullcalendar/react/skeleton.css';
@@ -23,11 +28,29 @@ import '@fullcalendar/react/themes/monarch/palettes/purple.css';
 type DateClickHandler = NonNullable<ComponentProps<typeof FullCalendar>["dateClick"]>;
 
 function CalendarView() {
+/* ---------------------------------- HOOKS --------------------------------- */
+  const [events, setEvents] = useState<EVENT[]>(EVENTS);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
 /* --------------------------------- CONSTS --------------------------------- */
   const controller = useCalendarController();
       
   const handleDateClick: DateClickHandler = (info) => {
-    alert('handle add event...' + info.dateStr)
+    setSelectedDate(info.dateStr);
+  };
+
+  const firstDate = [...events].map((e) => String(e.start)).sort()[0];
+
+/* ---------------------------- HANDLERS HELPERS ---------------------------- */
+  const handleSaveEvent = (event: EVENT) =>
+    setEvents((prev) =>
+      prev.some((e) => e.id === event.id)
+        ? prev.map((e) => (e.id === event.id ? event : e)) // edit
+        : [...prev, event] // create
+    );
+
+  const handleDeleteEvent = (id: string) => {
+    setEvents((prev) => prev.filter((event) => event.id !== id));
   };
 
 /* -------------------------------- RENDERING ------------------------------- */
@@ -42,9 +65,19 @@ function CalendarView() {
           interactionPlugin,
           listPlugin,
         ]}
+        events={events}
         controller={controller}
         initialView='dayGridMonth'
+        initialDate={firstDate}
         dateClick={handleDateClick}
+        aspectRatio={2.2}
+      />
+
+      <EventNewEditForm
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        onSave={handleSaveEvent}
+        onDelete={handleDeleteEvent}
       />
     </div>
   )
