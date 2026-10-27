@@ -1,7 +1,7 @@
 export type EVENT = {
     id: string;
     title: string;
-    description: string;
+    description?: string;
     start: string;
     end?: string;
     allDay?: boolean;
