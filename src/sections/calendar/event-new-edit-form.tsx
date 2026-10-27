@@ -70,16 +70,18 @@ function EventNewEditForm({ currentEvent, selectedDate, setSelectedDate, onSave,
  });
 
 /* -------------------------------- CONSTANTS ------------------------------- */
-  const defaultValues = useMemo(
-    () => ({
-      title: currentEvent?.title || '',
-      description: '',
-      allDay: currentEvent?.allDay || false,
-      start: currentEvent?.start || '',
-      end: currentEvent?.end || '',
-      color: currentEvent?.color ?? DEFAULT_COLOR
-    }), 
-    [currentEvent]
+  const defaultValues = useMemo(() => {
+      const baseDate = selectedDate ? selectedDate.slice(0, 10) : "";
+
+      return {
+        title: currentEvent?.title || '',
+        description: currentEvent?.description || '',
+        allDay: currentEvent?.allDay || false,
+        start: currentEvent?.start || (baseDate ? `${baseDate}T09:00` : ''),
+        end: currentEvent?.end || (baseDate ? `${baseDate}T10:00` : ''),
+        color: currentEvent?.color ?? DEFAULT_COLOR
+      };
+    },[currentEvent, selectedDate]
   );
 
   const methods = useForm({ 
@@ -151,7 +153,11 @@ function EventNewEditForm({ currentEvent, selectedDate, setSelectedDate, onSave,
 /* -------------------------------- RENDERING ------------------------------- */
   return (
     <Dialog open={!!selectedDate} onOpenChange={(open) => !open && setSelectedDate(null)}>
-        <DialogContent showCloseButton={false} className="bg-gray-100 p-0 gap-0 sm:max-w-sm overflow-hidden">
+        <DialogContent 
+          showCloseButton={false} 
+          onOpenAutoFocus={(e) => e.preventDefault()}
+          className="bg-gray-100 p-0 gap-0 sm:max-w-sm overflow-hidden"
+        >
             <DialogHeader className="bg-white p-4 border-b">
                 <DialogTitle className="text-sm">
                     {currentEvent ? 'Edit event' : 'Add event'}
@@ -207,13 +213,13 @@ function EventNewEditForm({ currentEvent, selectedDate, setSelectedDate, onSave,
                 <div className={`flex p-4 bg-white ${currentEvent ? 'justify-between' : 'justify-end'}`}>
                     {currentEvent && (
                         <Button 
-                            className="p-0 bg-transparent hover:bg-transparent cursor-pointer" 
+                            className="!p-2 bg-transparent hover:bg-red-100 rounded-full cursor-pointer" 
                             type="button"
                             aria-label="Delete event"
                             title="Delete event"
                             onClick={handleDelete}
                         >
-                            <Trash /> 
+                            <Trash className="text-red-600 text-lg" /> 
                         </Button>
                     )}
 

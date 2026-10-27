@@ -26,16 +26,19 @@ import '@fullcalendar/react/themes/monarch/palettes/purple.css';
 /*                           CALENDAR VIEW COMPONENT                          */
 /* -------------------------------------------------------------------------- */
 type DateClickHandler = NonNullable<ComponentProps<typeof FullCalendar>["dateClick"]>;
+type EventClickHandler = NonNullable<ComponentProps<typeof FullCalendar>["eventClick"]>;
 
 function CalendarView() {
 /* ---------------------------------- HOOKS --------------------------------- */
   const [events, setEvents] = useState<EVENT[]>(EVENTS);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [currentEvent, setCurrentEvent] = useState<EVENT | undefined>(undefined);
 
 /* --------------------------------- CONSTS --------------------------------- */
   const controller = useCalendarController();
       
   const handleDateClick: DateClickHandler = (info) => {
+    setCurrentEvent(undefined);
     setSelectedDate(info.dateStr);
   };
 
@@ -48,6 +51,13 @@ function CalendarView() {
         ? prev.map((e) => (e.id === event.id ? event : e)) // edit
         : [...prev, event] // create
     );
+
+  const handleEventClick: EventClickHandler = (info) => {
+    const event = events.find((e) => e.id === info.event.id);
+    if (!event) return;
+    setCurrentEvent(event);
+    setSelectedDate(event.start.slice(0, 10)); // hedhi li tfta7 el dialog
+  };
 
   const handleDeleteEvent = (id: string) => {
     setEvents((prev) => prev.filter((event) => event.id !== id));
@@ -65,15 +75,20 @@ function CalendarView() {
           interactionPlugin,
           listPlugin,
         ]}
+        aspectRatio={2.2}
         events={events}
         controller={controller}
         initialView='dayGridMonth'
         initialDate={firstDate}
         dateClick={handleDateClick}
-        aspectRatio={2.2}
+        eventClick={handleEventClick}
+        eventClass="cursor-pointer"
+        dayMaxEvents={3}
+        moreLinkContent={(arg) => `+${arg.num} more events`}
       />
 
       <EventNewEditForm
+        currentEvent={currentEvent}
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
         onSave={handleSaveEvent}
